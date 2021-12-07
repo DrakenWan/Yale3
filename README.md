@@ -6,7 +6,8 @@ Yale3 is a simplified version of [Rekrut](https://github.com/DrakenWan/Rekrut). 
 
 <b>Note </b> 
 
-Extraction Code in [Rekrut](https://github.com/DrakenWan/Rekrut) chrome extension has become obsolete due to several policy changes on linkedin website such as content policy and certain CSS and DOM design changes 
+Extraction Code in [Rekrut](https://github.com/DrakenWan/Rekrut) chrome extension has become obsolete due to several policy changes on linkedin website such as content policy and certain CSS and DOM design changes.
+However, the server sided script can still be implemented to this day.
 
 ## Extraction
 
