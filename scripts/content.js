@@ -67,14 +67,14 @@ function main() {
    
     data = extract();   
     var bodycontainer = document.getElementById("slider").querySelector("#sbodycontainer");
-    bodycontainer.textContent = JSON.stringify(data)                   
+    bodycontainer = bodycontainer.querySelector("#objectvalue")
+    bodycontainer.value = JSON.stringify(data)                      
     window.onscroll = function() {
         data = extract();
         //alert(JSON.stringify(data));
         var bodycontainer = document.getElementById("slider").querySelector("#sbodycontainer");
-        //below code appends the data values onto the 
-        // slider frame
-        bodycontainer.textContent = JSON.stringify(data)
+        bodycontainer = bodycontainer.querySelector("#objectvalue")
+        bodycontainer.value = JSON.stringify(data)       
     }
     
 }
@@ -102,7 +102,9 @@ function sliderGen() {
 
     var sliderDivInnerHTML = "\
     <div id='sheader'><h2>Header</h2><hr/></div>\
-    <div id='sbodycontainer'></div>\
+    <div id='sbodycontainer'>\
+    <textarea id='objectvalue'></textarea>\
+    </div>\
     <div id='sfooter'><hr/><h2>footer</h2></div>\
     ";
 
