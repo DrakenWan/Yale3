@@ -64,19 +64,19 @@ function main() {
     //Resolution: Added trigger through window.onscroll
     //            function to register extraction everytime
     //            a user scrolls on the webpage.
+   
     data = extract();   
-    var frame = document.getElementById("slider");
-    frame.textContent = JSON.stringify(data)                   
+    var bodycontainer = document.getElementById("slider").querySelector("#sbodycontainer");
+    bodycontainer.textContent = JSON.stringify(data)                   
     window.onscroll = function() {
         data = extract();
         //alert(JSON.stringify(data));
-
-        var frame = document.getElementById("slider");
-
+        var bodycontainer = document.getElementById("slider").querySelector("#sbodycontainer");
         //below code appends the data values onto the 
         // slider frame
-        frame.textContent = JSON.stringify(data)
+        bodycontainer.textContent = JSON.stringify(data)
     }
+    
 }
 
 
@@ -95,19 +95,34 @@ function extractBtnGen() {
 function sliderGen() {
     var slider = document.createElement("div");
     slider.id = "slider";
+    //slider.src = chrome.extension.getURL("./views/slider.html");
     //var sliderFileUrl = chrome.extension.getURL("/views/slider.html");
     //alert(sliderFileUrl)
     //append slider to webpage
+
+    var sliderDivInnerHTML = "\
+    <div id='sheader'><h2>Header</h2><hr/></div>\
+    <div id='sbodycontainer'></div>\
+    <div id='sfooter'><hr/><h2>footer</h2></div>\
+    ";
+
+    slider.innerHTML += sliderDivInnerHTML;
     {
-      //blockity blockity add removal property
+      //blockity blockity ad removal property
       /* apparently this doesn't work always
-      linkedin has a mechanism to block ad-banner removal */
+      linkedin has a mechanism to block ad-banner removal 
+       y-variable is working fine so far. kept in x just in case
+      */
+    
       var x = document.getElementsByClassName("ad-banner");
+      var y = $(".ad-banner-container")
       try {
         x[0].remove();
+        y.remove();
       } catch(err) {console.log(err);}
     }
-    document.body.appendChild(slider);
+
+    document.body.prepend(slider);
 }
 
 //slider function to toggle the slider frame
@@ -137,173 +152,175 @@ function extract() {
     // retreiving profile Section data
     const profileSection = document.querySelector(".pv-top-card");
     
-    const fullNameElement = profileSection?.querySelector('.pv-top-card--list li:first-child')
-        const fullName = fullNameElement?.textContent || null
+    const fullNameElement = profileSection?.querySelector('h1')
+    const fullName = fullNameElement?.textContent || null
 
-        const titleElement = profileSection?.querySelector('h2')
-        var title = titleElement?.textContent || null
+    const titleElement = profileSection?.querySelector('.text-body-medium')
+    var title = titleElement?.textContent || null
 
-        const locationElement = profileSection?.querySelector('.pv-top-card--list.pv-top-card--list-bullet.mt1 li:first-child')
-        var location = locationElement?.textContent || null
+    var tbs = profileSection?.querySelectorAll(".text-body-small")
+    const locationElement = ((tbs) ? tbs[1] : null)
+    var location = locationElement?.textContent || null
 
-        const photoElement = profileSection?.querySelector('.pv-top-card__photo') || profileSection?.querySelector('.profile-photo-edit__preview')
-        const photo = photoElement?.getAttribute('src') || null
+    const photoElement = document.querySelector(".pv-top-card-profile-picture__image") || profileSection?.querySelector('.profile-photo-edit__preview')
+    const photo = photoElement?.getAttribute('src') || null
 
-        const descriptionElement = document.querySelector('.pv-about__summary-text .lt-line-clamp__raw-line') // Is outside "profileSection"
-        var description = descriptionElement?.textContent || null
-
-        const url = window.location.url;
-        var rawProfileData = {
-            fullName,
-            title,
-            location,
-            photo,
-            description,
-            url
-        }
-
-        var profileData = {
-            fullName: getCleanText(rawProfileData.fullName),
-            title: getCleanText(rawProfileData.title),
-            location: getCleanText(rawProfileData.location),
-            description: getCleanText(rawProfileData.description),
-            photo: rawProfileData.photo,
-            url: rawProfileData.url
-        }
-        ///extraction of profile data ends here///
-
-        ///extraction of experiences below
-        var nodes = $("#experience-section > ul > li");
-        //alert(JSON.stringify(nodes));
-        let UwU = [] //init array of uwu company data
-        
-        //loop over nodes to push data in UwU
-        for(const node of nodes) {
-          const titleElement = node.querySelector('h3');
-          var title = titleElement?.textContent || null
-          title = getCleanText(title);
-
-          const employmentTypeElement = node.querySelector('span.pv-entity__secondary-title');
-          var employmentType = employmentTypeElement?.textContent || null
-          employmentType = getCleanText(employmentType);
-
-          const companyElement = node.querySelector('.pv-entity__secondary-title');
-          const companyElementClean = (companyElement && companyElement?.querySelector('span') ) ? (companyElement?.removeChild(companyElement.querySelector('span') )  && companyElement ): (companyElement || null);
-          var company = companyElementClean?.textContent || null
-          company = getCleanText(company);
-
-          const descriptionElement = node.querySelector('.pv-entity__description');
-          var description = descriptionElement?.textContent || null
-          description = getCleanText(description);
-
-          const dateRangeElement = node.querySelector('.pv-entity__date-range span:nth-child(2)');
-          const dateRangeText = dateRangeElement?.textContent || null
-
-          const startDatePart = dateRangeText?.split('–')[0] || null;
-          const startDate = startDatePart?.trim() || null;
-
-          const endDatePart = dateRangeText?.split('–')[1] || null;
-          const endDateIsPresent = endDatePart?.trim().toLowerCase() === 'present' || false;
-          const endDate = (endDatePart && !endDateIsPresent) ? endDatePart.trim() : 'Present';
-
-          const locationElement = node.querySelector('.pv-entity__location span:nth-child(2)');
-          var location = locationElement?.textContent || null;
-          location = getCleanText(location);
-
-
-          //UwU push!
-          UwU.push({
-              title,
-              company,
-              employmentType,
-              location,
-              startDate,
-              endDate,
-              endDateIsPresent,
-              description
-          });
-
-        
-        }//loop ends here
-
-        var experiences = UwU;
-        //extraction of experiences ends here//
-
-        // extracting education section
-        var nodes = $("#education-section ul > .ember-view");
-        let education = [];
-
-        for (const node of nodes) {
-
-            const schoolNameElement = node.querySelector('h3.pv-entity__school-name');
-            var schoolName = schoolNameElement?.textContent || null;
-            schoolName = getCleanText(schoolName);
-
-            const degreeNameElement = node.querySelector('.pv-entity__degree-name .pv-entity__comma-item');
-            var degreeName = degreeNameElement?.textContent || null;
-            degreeName = getCleanText(degreeName);
-
-            const fieldOfStudyElement = node.querySelector('.pv-entity__fos .pv-entity__comma-item');
-            var fieldOfStudy = fieldOfStudyElement?.textContent || null;
-            fieldOfStudy = getCleanText(fieldOfStudy);
-
-            // const gradeElement = node.querySelector('.pv-entity__grade .pv-entity__comma-item');
-            // const grade = (gradeElement && gradeElement.textContent) ? window.getCleanText(fieldOfStudyElement.textContent) : null;
-  
-            const dateRangeElement = node.querySelectorAll('.pv-entity__dates time');
-  
-            const startDatePart = dateRangeElement && dateRangeElement[0]?.textContent || null;
-            const startDate = startDatePart || null
-  
-            const endDatePart = dateRangeElement && dateRangeElement[1]?.textContent || null;
-            const endDate = endDatePart || null
-            
-            
-            education.push({
-            schoolName,
-            degreeName,
-            fieldOfStudy,
-            startDate,
-            endDate
-          })
-        }
-        //extraction of education ends here
+    const descriptionElement = document.querySelector('.pv-about-section > div')// Is outside "profileSection"
+    var description = descriptionElement?.textContent || null
         
 
-        //extraction of licenses and certifications starts
-        let skills = [];
-        var skillNameNodes = document.querySelectorAll('.pv-skill-category-entity__name-text');
-        var endorsementCountNodes = document.querySelectorAll('.pv-skill-category-entity__endorsement-count');
+    const url = window.location.url;
+    var rawProfileData = {
+        fullName,
+        title,
+        location,
+        photo,
+        description,
+        url
+    }
+
+    var profileData = {
+        fullName: getCleanText(rawProfileData.fullName),
+        title: getCleanText(rawProfileData.title),
+        location: getCleanText(rawProfileData.location),
+        description: getCleanText(rawProfileData.description),
+        photo: rawProfileData.photo,
+        url: rawProfileData.url
+    }
+    ///extraction of profile data ends here///
+
+    ///extraction of experiences below
+    var nodes = $("#experience-section > ul > li");
+    //alert(JSON.stringify(nodes));
+    let UwU = [] //init array of uwu company data
+    
+    //loop over nodes to push data in UwU
+    for(const node of nodes) {
+      const titleElement = node.querySelector('h3');
+      var title = titleElement?.textContent || null
+      title = getCleanText(title);
+
+      const employmentTypeElement = node.querySelector('span.pv-entity__secondary-title');
+      var employmentType = employmentTypeElement?.textContent || null
+      employmentType = getCleanText(employmentType);
+
+      const companyElement = node.querySelector('.pv-entity__secondary-title');
+      const companyElementClean = (companyElement && companyElement?.querySelector('span') ) ? (companyElement?.removeChild(companyElement.querySelector('span') )  && companyElement ): (companyElement || null);
+      var company = companyElementClean?.textContent || null
+      company = getCleanText(company);
+
+      const descriptionElement = node.querySelector('.pv-entity__description');
+      var description = descriptionElement?.textContent || null
+      description = getCleanText(description);
+
+      const dateRangeElement = node.querySelector('.pv-entity__date-range span:nth-child(2)');
+      const dateRangeText = dateRangeElement?.textContent || null
+
+      const startDatePart = dateRangeText?.split('–')[0] || null;
+      const startDate = startDatePart?.trim() || null;
+
+      const endDatePart = dateRangeText?.split('–')[1] || null;
+      const endDateIsPresent = endDatePart?.trim().toLowerCase() === 'present' || false;
+      const endDate = (endDatePart && !endDateIsPresent) ? endDatePart.trim() : 'Present';
+
+      const locationElement = node.querySelector('.pv-entity__location span:nth-child(2)');
+      var location = locationElement?.textContent || null;
+      location = getCleanText(location);
+      
+      
+
+      //UwU push!
+      UwU.push({
+          title,
+          company,
+          employmentType,
+          location,
+          startDate,
+          endDate,
+          endDateIsPresent,
+          description
+      });
+
+    
+    }//loop ends here
+
+    var experiences = UwU;
+    //extraction of experiences ends here//
+
+    // extracting education section
+    var nodes = $("#education-section ul > .ember-view");
+    let education = [];
+
+    for (const node of nodes) {
+
+        const schoolNameElement = node.querySelector('h3.pv-entity__school-name');
+        var schoolName = schoolNameElement?.textContent || null;
+        schoolName = getCleanText(schoolName);
+
+        const degreeNameElement = node.querySelector('.pv-entity__degree-name .pv-entity__comma-item');
+        var degreeName = degreeNameElement?.textContent || null;
+        degreeName = getCleanText(degreeName);
+
+        const fieldOfStudyElement = node.querySelector('.pv-entity__fos .pv-entity__comma-item');
+        var fieldOfStudy = fieldOfStudyElement?.textContent || null;
+        fieldOfStudy = getCleanText(fieldOfStudy);
+
+        // const gradeElement = node.querySelector('.pv-entity__grade .pv-entity__comma-item');
+        // const grade = (gradeElement && gradeElement.textContent) ? window.getCleanText(fieldOfStudyElement.textContent) : null;
+
+        const dateRangeElement = node.querySelectorAll('.pv-entity__dates time');
+
+        const startDatePart = dateRangeElement && dateRangeElement[0]?.textContent || null;
+        const startDate = startDatePart || null
+
+        const endDatePart = dateRangeElement && dateRangeElement[1]?.textContent || null;
+        const endDate = endDatePart || null
         
-        for(var i=0; i<skillNameNodes.length; i++)
-         {
-           if(endorsementCountNodes[i]) {
-           skills.push(
-             {
-               "skillName": getCleanText(skillNameNodes[i].textContent),
-               "endorsementCount": endorsementCountNodes[i].textContent
-             }
-           );
-          } else {
-            skills.push(
-              {
-                "skillName": getCleanText(skillNameNodes[i].textContent),
-                "endorsementCount": "0"
-              }
-             );
+        
+        education.push({
+        schoolName,
+        degreeName,
+        fieldOfStudy,
+        startDate,
+        endDate
+      })
+    }
+    //extraction of education ends here
+    
+
+    //extraction of licenses and certifications starts
+    let skills = [];
+    var skillNameNodes = document.querySelectorAll('.pv-skill-category-entity__name-text');
+    var endorsementCountNodes = document.querySelectorAll('.pv-skill-category-entity__endorsement-count');
+    
+    for(var i=0; i<skillNameNodes.length; i++)
+      {
+        if(endorsementCountNodes[i]) {
+        skills.push(
+          {
+            "skillName": getCleanText(skillNameNodes[i].textContent),
+            "endorsementCount": endorsementCountNodes[i].textContent
           }
-       }
-         
-        
-        //add in the extracted object values here
-        userProfile = {
-            "profileData": profileData,
-            "experiences": experiences,
-            "education": education,
-            "skills": skills
-        }
+        );
+      } else {
+        skills.push(
+          {
+            "skillName": getCleanText(skillNameNodes[i].textContent),
+            "endorsementCount": "0"
+          }
+          );
+      }
+    }
+      
+    //add in the extracted object values here
+    userProfile = {
+        "profileData": profileData,
+        "experiences": experiences,
+        "education": education,
+        "skills": skills
+    }
 
-        return userProfile;
+    return userProfile;
 }
 
 
@@ -367,9 +384,12 @@ function getCleanText(text) {
 }
 
 
-//////// * ----- UTILS ENDS -------* /////////
+
 
 
 ///// *----- TEXT CONTENT INJECTION ---- *////
-var sliderDivTextContent = "";
-/// * ---- TEXT CONTENT INJECTION ENDS ---- * ///
+function insertHTMLinSlider() {
+  
+}
+
+//////// * ----- UTILS ENDS -------* /////////

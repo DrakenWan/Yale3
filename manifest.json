@@ -15,8 +15,7 @@
         {
             "matches": ["https://*.linkedin.com/*"],
             "css": ["./css/content.css"],
-            "js": ["./scripts/jquery-3.6.0.min.js","./scripts/content.js"],
-            "all_frames": true
+            "js": ["./scripts/jquery-3.6.0.min.js","./scripts/content.js"]
         }
     ],
 
