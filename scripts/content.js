@@ -228,9 +228,7 @@ function extract() {
       const locationElement = node.querySelector('.pv-entity__location span:nth-child(2)');
       var location = locationElement?.textContent || null;
       location = getCleanText(location);
-      
-      
-
+            
       //UwU push!
       UwU.push({
           title,
@@ -290,7 +288,7 @@ function extract() {
     //extraction of education ends here
     
 
-    //extraction of licenses and certifications starts
+    //extraction of skills starts
     let skills = [];
     var skillNameNodes = document.querySelectorAll('.pv-skill-category-entity__name-text');
     var endorsementCountNodes = document.querySelectorAll('.pv-skill-category-entity__endorsement-count');
@@ -313,60 +311,105 @@ function extract() {
           );
       }
     }
-      
+   //extraction fo skills ends here 
+
+   ///extraction of accomplishments (courses, test scores, projects,
+   ///                               Languages, honor-awards)
+
+   //first, extract out the array of nodes containing different sections
+   var acc_nodes = document.querySelectorAll(".pv-accomplishments-section > div")
+   if(acc_nodes.length != 0) {
+    var course_nodes = acc_nodes[0].querySelectorAll("div > ul > li");
+    var project_nodes = acc_nodes[1].querySelectorAll("div > ul > li");
+    var lang_nodes = acc_nodes[2].querySelectorAll("div > ul > li");
+    var tests = acc_nodes[3].querySelectorAll("div > ul > li");
+    var awards = acc_nodes[4].querySelectorAll("div > ul > li");
+ 
+    ///extracting different sections starting with course section
+ 
+    /////COURSES/////
+    var courses = []
+    if(course_nodes) { //if course_nodes exists
+ 
+     for(var node of course_nodes) {
+       var courseNameNode = node.querySelector("h4")
+       var course_name = courseNameNode?.textContent.replace("Course name", "") || null
+       var courseCodeNode = node.querySelector("p")
+       var course_code = courseCodeNode?.textContent.replace("Course number", "") || null
+             
+       courses.push({
+         "courseName": getCleanText(course_name),
+         "courseCode": getCleanText(course_code)
+       });
+     }
+     //alert(acc_nodes.length)
+    }
+   }
+   /////COURSES EXTRACTION ENDS HERE/////
+   
+   
+   var accomplishments = {
+     courses: courses || []
+   }
+
+   ////Accomplishments extraction ends here
+    
     //add in the extracted object values here
     userProfile = {
         "profileData": profileData,
         "experiences": experiences,
         "education": education,
-        "skills": skills
+        "skills": skills,
+        "accomplishments" : accomplishments
     }
 
     return userProfile;
-}
-
-
-function expandButtons() {
-    const expandButtonsSelectors = [
-        '.pv-profile-section.pv-about-section .lt-line-clamp__more', // About
-        '#experience-section .pv-profile-section__see-more-inline.link', // Experience
-        '.pv-profile-section.education-section button.pv-profile-section__see-more-inline', // Education
-        '.pv-skill-categories-section [data-control-name="skill_details"]', // Skills
-      ];
-
-      const seeMoreButtonsSelectors = ['.pv-entity__description .lt-line-clamp__line.lt-line-clamp__line--last .lt-line-clamp__more[href="#"]', '.lt-line-clamp__more[href="#"]:not(.lt-line-clamp__ellipsis--dummy)']
-
-      for (const buttonSelector of expandButtonsSelectors) {
-        try {
-          if ($(buttonSelector) !== null) {
-            $(buttonSelector).click();
-          }
-        } catch (err) {
-          alert("Couldn't expand buttons");
-        }
-      }
-
-
-      for (const seeMoreButtonSelector of seeMoreButtonsSelectors) {
-        const buttons =  $(seeMoreButtonSelector)
-
-        for (const button of buttons) {
-          if (button) {
-            try {
-                button.click()
-            } catch (err) {
-              alert("Error expanding see more buttons");
-            }
-          }
-        }
-      }
-}
+}//Extract() functions ends here
 
 
 
 
 
 //////////// *---- UTILS -----* //////////////
+// Utility functions
+
+function expandButtons() {
+  const expandButtonsSelectors = [
+      '.pv-profile-section.pv-about-section .lt-line-clamp__more', // About
+      '#experience-section .pv-profile-section__see-more-inline.link', // Experience
+      '.pv-profile-section.education-section button.pv-profile-section__see-more-inline', // Education
+      '.pv-skill-categories-section [data-control-name="skill_details"]', // Skills
+    ];
+
+    const seeMoreButtonsSelectors = ['.pv-entity__description .lt-line-clamp__line.lt-line-clamp__line--last .lt-line-clamp__more[href="#"]', '.lt-line-clamp__more[href="#"]:not(.lt-line-clamp__ellipsis--dummy)']
+
+    for (const buttonSelector of expandButtonsSelectors) {
+      try {
+        if ($(buttonSelector) !== null) {
+          $(buttonSelector).click();
+        }
+      } catch (err) {
+        alert("Couldn't expand buttons");
+      }
+    }
+
+
+    for (const seeMoreButtonSelector of seeMoreButtonsSelectors) {
+      const buttons =  $(seeMoreButtonSelector)
+
+      for (const button of buttons) {
+        if (button) {
+          try {
+              button.click()
+          } catch (err) {
+            alert("Error expanding see more buttons");
+          }
+        }
+      }
+    }
+}
+
+
 
 function getCleanText(text) {
     const regexRemoveMultipleSpaces = / +/g
@@ -385,13 +428,5 @@ function getCleanText(text) {
     return cleanText
 }
 
-
-
-
-
-///// *----- TEXT CONTENT INJECTION ---- *////
-function insertHTMLinSlider() {
-  
-}
 
 //////// * ----- UTILS ENDS -------* /////////

@@ -12,7 +12,15 @@ However, the server sided script can still be implemented to this day.
 ## Extraction
 
 Currently able to extract:-
-* `profile data`
-* `experience section`
-* `education section`
-* `skills section`
+* `profile data` - [x]
+* `experience section` - [x]
+* `education section` - [x]
+* `certifications` - [ ]
+* `volunteer experience` - [ ]
+* `skills section` - [x]
+* `accomplishments` - [ ]
+  * `courses` - [x]
+  * `projects` - [ ]
+  * `languages` - [ ]
+  * `test scores` - [ ]
+  * `awards` - [ ]
