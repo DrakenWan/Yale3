@@ -318,7 +318,7 @@ function extract() {
 
    //first, extract out the array of nodes containing different sections
    var acc_nodes = document.querySelectorAll(".pv-accomplishments-section > div")
-   if(acc_nodes.length != 0) {
+   if(acc_nodes.length != 0) {//check accomplishments nodelist length is not 0
     var course_nodes = acc_nodes[0].querySelectorAll("div > ul > li");
     var project_nodes = acc_nodes[1].querySelectorAll("div > ul > li");
     var lang_nodes = acc_nodes[2].querySelectorAll("div > ul > li");
@@ -331,20 +331,14 @@ function extract() {
     var courses = []
     if(course_nodes) { //if course_nodes exists
  
-     for(var node of course_nodes) {
-       var courseNameNode = node.querySelector("h4")
-       var course_name = courseNameNode?.textContent.replace("Course name", "") || null
-       var courseCodeNode = node.querySelector("p")
-       var course_code = courseCodeNode?.textContent.replace("Course number", "") || null
-             
-       courses.push({
-         "courseName": getCleanText(course_name),
-         "courseCode": getCleanText(course_code)
-       });
+     for(var nodo of course_nodes) {
+       var courseName = nodo.textContent;
+       courses.push(
+         getCleanText(courseName)
+       );
      }
-     //alert(acc_nodes.length)
     }
-   }
+  } 
    /////COURSES EXTRACTION ENDS HERE/////
    
    
