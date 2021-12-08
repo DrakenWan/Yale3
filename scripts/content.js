@@ -317,34 +317,44 @@ function extract() {
    ///                               Languages, honor-awards)
 
    //first, extract out the array of nodes containing different sections
-   var acc_nodes = document.querySelectorAll(".pv-accomplishments-section > div")
-   if(acc_nodes.length != 0) {//check accomplishments nodelist length is not 0
-    var course_nodes = acc_nodes[0].querySelectorAll("div > ul > li");
-    var project_nodes = acc_nodes[1].querySelectorAll("div > ul > li");
-    var lang_nodes = acc_nodes[2].querySelectorAll("div > ul > li");
-    var tests = acc_nodes[3].querySelectorAll("div > ul > li");
-    var awards = acc_nodes[4].querySelectorAll("div > ul > li");
- 
-    ///extracting different sections starting with course section
- 
-    /////COURSES/////
-    var courses = []
-    if(course_nodes) { //if course_nodes exists
- 
-     for(var nodo of course_nodes) {
-       var courseName = nodo.textContent;
-       courses.push(
-         getCleanText(courseName)
-       );
-     }
+  var coursesection = document.querySelector(".courses")
+  var projectsection = document.querySelector(".projects");
+  // var lang_nodes = acc_nodes[2]?.querySelectorAll("div > ul > li") || null;
+  // var tests = acc_nodes[3]?.querySelectorAll("div > ul > li") || null;
+  // var awards = acc_nodes[4]?.querySelectorAll("div > ul > li") || null;
+
+  ///extracting different sections starting with course section
+
+  /////COURSES/////
+  var courses = []
+  if(coursesection) { //if coursesection exists
+    var course_nodes = coursesection.querySelectorAll("div > ul > li") || null;
+    for(var nodo of course_nodes) {
+      var courseName = nodo.textContent;
+      courses.push(
+        getCleanText(courseName)
+      );
     }
-  } 
-   /////COURSES EXTRACTION ENDS HERE/////
-   
-   
-   var accomplishments = {
-     courses: courses || []
-   }
+  }
+  /////COURSES EXTRACTION ENDS HERE/////
+  
+  /////PROJECTS////
+  var projects = []
+  if(projectsection) {
+    var project_nodes = projectsection.querySelectorAll("div > ul > li") || null;
+    for(var nodo of project_nodes) {
+      var projectName = nodo.textContent;
+      projects.push(
+        getCleanText(projectName)
+      );
+    }
+  }
+  /////PROJECTS EXTRACTION ENDS HERE////
+
+  var accomplishments = {
+    "courses": courses || [],
+    "projects": projects || []
+  }
 
    ////Accomplishments extraction ends here
     
