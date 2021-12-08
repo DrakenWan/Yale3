@@ -19,7 +19,7 @@ Currently able to extract:-
 * - [ ] `volunteer experience` 
 * - [x] `skills section` 
 * - [ ] `accomplishments` 
-  * - [ ] `courses`  _bug in extraction of courses in 1.1.0 release_ 
+  * - [x] `courses`  _bug in extraction of courses in 1.1.0 release_ 
   * - [ ] `projects` 
   * - [ ] `languages` 
   * - [ ] `test scores` 
