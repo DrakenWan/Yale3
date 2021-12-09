@@ -317,10 +317,10 @@ function extract() {
    ///                               Languages, honor-awards)
 
    //first, extract out the array of nodes containing different sections
-  var coursesection = document.querySelector(".courses")
+  var coursesection = document.querySelector(".courses");
   var projectsection = document.querySelector(".projects");
-  // var lang_nodes = acc_nodes[2]?.querySelectorAll("div > ul > li") || null;
-  // var tests = acc_nodes[3]?.querySelectorAll("div > ul > li") || null;
+  var languagesection = document.querySelector(".languages");
+  //var tests = acc_nodes[3]?.querySelectorAll("div > ul > li") || null;
   // var awards = acc_nodes[4]?.querySelectorAll("div > ul > li") || null;
 
   ///extracting different sections starting with course section
@@ -351,23 +351,63 @@ function extract() {
   }
   /////PROJECTS EXTRACTION ENDS HERE////
 
+
+  ////LANGUAGES EXTRACTION////
+  var languages = []
+  if(languagesection) {
+    var lang_nodes = languagesection.querySelectorAll("div > ul > li") || null;
+    for(var nodo of lang_nodes) {
+      var language = nodo.textContent;
+      languages.push(
+        getCleanText(language)
+      );
+    }
+  }
+  ////LANGUAGE EXTRACTION ENDS HERE////
+
+
   var accomplishments = {
     "courses": courses || [],
-    "projects": projects || []
+    "projects": projects || [],
+    "languages": languages || []
   }
 
-   ////Accomplishments extraction ends here
-    
-    //add in the extracted object values here
-    userProfile = {
-        "profileData": profileData,
-        "experiences": experiences,
-        "education": education,
-        "skills": skills,
-        "accomplishments" : accomplishments
-    }
+  ////Accomplishments extraction ends here
+  
+  ///Licences and Certifications Extraction///
+  var certnodes = document.querySelectorAll(".pv-profile-section--certifications-section > ul > li");
+  var certs = [];
+  if(certnodes) { //if the section exists or nah
+    for(var nodo of certnodes) {
+      var summ1 = nodo.querySelector("div.pv-certifications__summary-info--has-extra-details");
+      var summ2 = nodo.querySelector("div.pv-entity__extra-details");
+      
+      var certtitle = summ1?.querySelector("h3")?.textContent || null;
+      var credurl = summ2?.querySelector("a").href || null;
 
-    return userProfile;
+      certs.push(
+        {
+          "title": getCleanText(certtitle),
+          "url": credurl
+        }
+      );
+    }//for loop ends
+  }
+
+
+  ///L&C extraction ends here///
+
+  //add in the extracted object values here
+  userProfile = {
+      "profileData": profileData,
+      "experiences": experiences,
+      "education": education,
+      "skills": skills,
+      "accomplishments" : accomplishments,
+      "certifications": certs
+  }
+
+  return userProfile;
 }//Extract() functions ends here
 
 

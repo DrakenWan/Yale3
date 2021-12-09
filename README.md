@@ -15,12 +15,19 @@ Currently able to extract:-
 * - [x] `profile data` 
 * - [x] `experience section` 
 * - [x] `education section` 
-* - [ ] `certifications` 
+* - [x] `certifications` 
 * - [ ] `volunteer experience` 
 * - [x] `skills section` 
-* - [ ] `accomplishments` 
+* - [x] `accomplishments` 
   * - [x] `courses`   
   * - [x] `projects` 
-  * - [ ] `languages` 
-  * - [ ] `test scores` 
-  * - [ ] `awards` 
+  * - [x] `languages` 
+  * - `test scores` _Planning not to extract these until the previous minor release [bug](https://github.com/DrakenWan/Yale3/issues/1) of accomplishment extraction is not fixed_
+  * - `awards` _Same as test scores_
+
+
+removed checkboxes on `test scores` and `awards` section. Planning not to extract these as the information from these is not viable unless the `accomplishments` section bug is fixed with a long term solution. For now assuming that entire `accomplishment` section has been extracted in progress.
+
+## Bugs
+
+Some bugs might have crept in. I strive to make the code as general as possible but the extractor tool may not be perfect. If you find any bug on any profile please let me know in [issues](https://github.com/DrakenWan/Yale3/issues) section.
