@@ -30,5 +30,5 @@ removed checkboxes on `test scores` and `awards` section. Planning not to extrac
 ## Note about Show More
 Click on each `show more` button for each of the sections. In case of the `accomplishments` section it is strictly recommended that the user not "extend" the drop-down arrows shown besides each section. The information extracted will not be properly formatted.
 
-## Bugs
-Some bugs might have crept in. I strive to make the code as general as possible but the extractor tool may not be perfect. If you find any bug on any profile please let me know in [issues](https://github.com/DrakenWan/Yale3/issues) section.
+## Bug reporting
+I strive to make the code as general as possible but the extractor tool may not be perfect. If you find any bug on any profile please let me know in [issues](https://github.com/DrakenWan/Yale3/issues) section.
