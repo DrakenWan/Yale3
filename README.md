@@ -12,18 +12,21 @@ However, the server sided script can still be implemented to this day.
 ## Extraction
 
 Currently able to extract:-
+
+Able to extract almost all profile data.
+
 * - [x] `profile data` 
 * - [x] `experience section` 
 * - [x] `education section` 
 * - [x] `certifications` 
-* - [ ] `volunteer experience` 
+* - [x] `volunteer experience` 
 * - [x] `skills section` 
 * - [x] `accomplishments` 
   * - [x] `courses`   
   * - [x] `projects` 
   * - [x] `languages` 
-  * - `test scores` _Planning not to extract these until the previous minor release [bug](https://github.com/DrakenWan/Yale3/issues/1) of accomplishment extraction is not fixed_
-  * - `awards` _Same as test scores_
+  * `test scores` _Planning not to extract these until the previous minor release [bug](https://github.com/DrakenWan/Yale3/issues/1) of accomplishment extraction is not fixed_
+  * `awards` _Same as test scores_
 
 removed checkboxes on `test scores` and `awards` section. Planning not to extract these as the information from these is not viable unless the `accomplishments` section bug is fixed with a long term solution. For now assuming that entire `accomplishment` section has been extracted in progress.
 
