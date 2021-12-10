@@ -393,18 +393,44 @@ function extract() {
       );
     }//for loop ends
   }
-
-
   ///L&C extraction ends here///
+
+
+  ///VOLUNTEER EXPERIENCE EXTRACTION///
+  let volunteer_experience = [];
+  var volnodes = document.querySelectorAll('section.volunteering-section li');
+  if(volnodes) {
+
+    for(var nodo of volnodes) {
+      var vol_title = nodo.querySelector('h3')?.textContent || null;
+      var vol_company = nodo.querySelector('h4')?.textContent.replace("Company Name", "") || null;
+      var vol_location = nodo.querySelector('.pv-entity__location span:nth-child(2)')?.textContent || null;
+      var vol_description = nodo.querySelector('.pv-entity__extra-details')?.textContent || null;
+      var date1 = nodo.querySelector('.pv-entity__date-range span:nth-child(2)')?.textContent || null;
+      var date2 = nodo.querySelector('.pv-entity__bullet-item')?.textContent || null;
+
+      volunteer_experience.push(
+        {
+          title: getCleanText(vol_title),
+          company: getCleanText(vol_company),
+          location: getCleanText(vol_location),
+          description: getCleanText(vol_description),
+          date1: getCleanText(date1),
+          date2: getCleanText(date2)
+        }
+      );
+    }//for-loop over volnodes
+  }//if-condn to check if vonodes exists
 
   //add in the extracted object values here
   userProfile = {
       "profileData": profileData,
       "experiences": experiences,
       "education": education,
+      "certifications": certs,
+      "volunteer_experience": volunteer_experience,
       "skills": skills,
-      "accomplishments" : accomplishments,
-      "certifications": certs
+      "accomplishments" : accomplishments
   }
 
   return userProfile;
