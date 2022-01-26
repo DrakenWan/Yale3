@@ -7,7 +7,7 @@ Yal§ or Yale3 (pronounced as Yal-crow) is a simplified version of [Rekrut](http
 <b>Note </b> 
 
 Extraction Code in [Rekrut](https://github.com/DrakenWan/Rekrut) chrome extension has become obsolete due to several policy changes on linkedin website such as content policy and certain CSS and DOM design changes.
-However, the server sided script can still be implemented to this day.
+However, the server sided script can still be implemented to this day. I recommend using this extension however. 
 
 ## Extraction
 
