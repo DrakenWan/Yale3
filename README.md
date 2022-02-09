@@ -11,20 +11,23 @@ However, the server sided script can still be implemented to this day.
 
 ## Extraction
 
+
 Currently able to extract:-
 
-Able to extract almost all profile data.
+#### Update (dated: 9th January, 2022)
+
+LinkedIn has made drastic changes to the way profile data is loaded. I have been quite busy with work lately. Not all sections can be extracted due to major document tag changes as well as the way the profile now interacts with user actions. Clicking on certain 'Show More' buttons takes you away to an entirely different document. I will try to amend this asap.
 
 * - [x] `profile data` 
-* - [x] `experience section` 
-* - [x] `education section` 
-* - [x] `certifications` 
-* - [x] `volunteer experience` 
-* - [x] `skills section` 
-* - [x] `accomplishments` 
-  * - [x] `courses`   
-  * - [x] `projects` 
-  * - [x] `languages` 
+* - [ ] `experience section` 
+* - [ ] `education section` 
+* - [ ] `certifications` 
+* - [ ] `volunteer experience` 
+* - [ ] `skills section` 
+* - [ ] `accomplishments` 
+  * - [ ] `courses`   
+  * - [ ] `projects` 
+  * - [ ] `languages` 
   * `test scores` _Planning not to extract these until the previous minor release [bug](https://github.com/DrakenWan/Yale3/issues/1) of accomplishment extraction is not fixed_
   * `awards` _Same as test scores_
 
