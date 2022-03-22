@@ -167,7 +167,7 @@ function extract() {
     const photoElement = document.querySelector(".pv-top-card-profile-picture__image") || profileSection?.querySelector('.profile-photo-edit__preview')
     const photo = photoElement?.getAttribute('src') || null
 
-    const descriptionElement = document.querySelector('.pv-about-section > div')// Is outside "profileSection"
+    const descriptionElement = document.querySelector('div#about')?.parentElement.querySelector('.pv-shared-text-with-see-more > div > span.visually-hidden')// Is outside "profileSection"
     var description = descriptionElement?.textContent || null
         
 
