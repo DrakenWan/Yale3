@@ -192,12 +192,22 @@ function extract() {
     ///extraction of profile data ends here///
 
     ///extraction of experiences below
-    var nodes = $("#experience-section > ul > li");
+    var nodes = document.querySelector('div#experience')?.parentElement.querySelectorAll('ul.pvs-list > li.artdeco-list__item > div.pvs-entity') || [];
     //alert(JSON.stringify(nodes));
     let UwU = [] //init array of uwu company data
     
     //loop over nodes to push data in UwU
-    for(const node of nodes) {
+    for (const node of nodes) {
+      
+      let experiences = node.querySelectorAll('span.visually-hidden');
+
+      let experiences_strings = []
+
+      for (const experience of experiences) { 
+        // console.log(experience.textContent);
+        experiences_strings.push(experience.textContent);
+      }
+
       const titleElement = node.querySelector('h3');
       var title = titleElement?.textContent || null
       title = getCleanText(title);
@@ -229,17 +239,19 @@ function extract() {
       var location = locationElement?.textContent || null;
       location = getCleanText(location);
             
-      //UwU push!
-      UwU.push({
-          title,
-          company,
-          employmentType,
-          location,
-          startDate,
-          endDate,
-          endDateIsPresent,
-          description
-      });
+      // //UwU push!
+      // UwU.push({
+      //     title,
+      //     company,
+      //     employmentType,
+      //     location,
+      //     startDate,
+      //     endDate,
+      //     endDateIsPresent,
+      //     description
+      // });
+
+      UwU.push(experiences_strings);
 
     
     }//loop ends here
