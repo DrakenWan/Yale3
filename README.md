@@ -19,7 +19,7 @@ Currently able to extract:-
 LinkedIn has made drastic changes to the way profile data is loaded. I have been quite busy with work lately. Not all sections can be extracted due to major document tag changes as well as the way the profile now interacts with user actions. Clicking on certain 'Show More' buttons takes you away to an entirely different document. I will try to amend this asap.
 
 * - [x] `profile data` 
-* - [ ] `experience section` 
+* - [x] `experience section` (able to only extract raw data with no proper formatting)
 * - [ ] `education section` 
 * - [ ] `certifications` 
 * - [ ] `volunteer experience` 
