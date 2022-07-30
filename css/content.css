@@ -1,5 +1,5 @@
-#extractBtn {
-    z-index: 999;
+#extractBtn, #savepdf {
+    
     border-radius: 4px;
     background-color: #0077b5;
     border: none;
@@ -14,14 +14,10 @@
     opacity: 0.8;
 
     /* positioning on window */
-    position: fixed;
-    top: auto;
-    right: auto;
-    bottom: 15px;
-    left: 15px;
+    position: relative;
 }
 
-#extractBtn:hover {
+#extractBtn:hover, #savepdf:hover {
     background-color: #035b8a;
     border-right: 2px solid grey;
     border-bottom: 2px solid grey;

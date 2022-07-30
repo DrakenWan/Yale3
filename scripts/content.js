@@ -77,6 +77,9 @@ function main() {
         bodycontainer.value = JSON.stringify(data)       
     }
     
+  //run savePDF option
+  document.getElementById('savepdf').addEventListener("click", savePDF);
+  
 }
 
 
@@ -104,6 +107,8 @@ function sliderGen() {
     <div id='sheader'><h2>Header</h2><hr/></div>\
     <div id='sbodycontainer'>\
     <textarea id='objectvalue'></textarea>\
+    <hr>\
+    <div id='savepdf'>Save PDF</div>\
     </div>\
     <div id='sfooter'><hr/><h2>footer</h2></div>\
     ";
@@ -435,8 +440,24 @@ function extract() {
 }//Extract() functions ends here
 
 
+function savePDF() {
+  var spanList = document.getElementsByTagName("span");
+  var m = [];
 
+  for(i=0; i<spanList.length; i++)
+   {
+     if(spanList[i].textContent == 'Save to PDF') {
+      m.push(spanList[i]);
+     }
+   }
 
+   if(m.length < 1) {
+    alert("No option to download profile.")
+   } else {
+    m[0].click();
+   }
+
+}
 
 //////////// *---- UTILS -----* //////////////
 // Utility functions
