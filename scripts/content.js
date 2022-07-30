@@ -109,20 +109,6 @@ function sliderGen() {
     ";
 
     slider.innerHTML += sliderDivInnerHTML;
-    {
-      //blockity blockity ad removal property
-      /* apparently this doesn't work always
-      linkedin has a mechanism to block ad-banner removal 
-       y-variable is working fine so far. kept in x just in case
-      */
-    
-      var x = document.getElementsByClassName("ad-banner");
-      var y = $(".ad-banner-container")
-      try {
-        x[0].remove();
-        y.remove();
-      } catch(err) {console.log(err);}
-    }
 
     document.body.prepend(slider);
 }
