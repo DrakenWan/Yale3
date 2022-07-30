@@ -14,12 +14,10 @@ However, the server sided script can still be implemented to this day. I recomme
 
 Currently able to extract:-
 
-#### Update (dated: 9th January, 2022)
 
-LinkedIn has made drastic changes to the way profile data is loaded. I have been quite busy with work lately. Not all sections can be extracted due to major document tag changes as well as the way the profile now interacts with user actions. Clicking on certain 'Show More' buttons takes you away to an entirely different document. I will try to amend this asap.
 
 * - [x] `profile data` 
-* - [x] `experience section` (able to only extract raw data with no proper formatting)
+* - [ ] `experience section` 
 * - [ ] `education section` 
 * - [ ] `certifications` 
 * - [ ] `volunteer experience` 
@@ -28,13 +26,20 @@ LinkedIn has made drastic changes to the way profile data is loaded. I have been
   * - [ ] `courses`   
   * - [ ] `projects` 
   * - [ ] `languages` 
-  * `test scores` _Planning not to extract these until the previous minor release [bug](https://github.com/DrakenWan/Yale3/issues/1) of accomplishment extraction is not fixed_
-  * `awards` _Same as test scores_
 
-removed checkboxes on `test scores` and `awards` section. Planning not to extract these as the information from these is not viable unless the `accomplishments` section bug is fixed with a long term solution. For now assuming that entire `accomplishment` section has been extracted in progress.
-
-## Note about Show More
-Click on each `show more` button for each of the sections. In case of the `accomplishments` section it is strictly recommended that the user not "extend" the drop-down arrows shown besides each section. The information extracted will not be properly formatted.
 
 ## Bug reporting
 I strive to make the code as general as possible but the extractor tool may not be perfect. If you find any bug on any profile please let me know in [issues](https://github.com/DrakenWan/Yale3/issues) section.
+
+
+#### Update (dated: 9th January, 2022)
+
+LinkedIn has made drastic changes to the way profile data is loaded. I have been quite busy with work lately. Not all sections can be extracted due to major document tag changes as well as the way the profile now interacts with user actions. Clicking on  'Show More *' buttons takes you away to an entirely different document. I will try to amend this asap.
+
+
+#### Update (dated: 30th July, 2022)
+
+I have migrated the manifest version from 2 to 3 for the extension. The version of Yalcrow has been changed to 2.0.0 starting from this readme commit. There are some errors that occured in doing so that I have mentioned in the description of last [commit](https://github.com/DrakenWan/Yale3/commit/af96ff1b5589b70a246e5112a0ebc4aa57cae443). But these errors do not jeopardise the extraction tool and it will still work on a linkedin profile page to extract the sections that are tickmarked in the aforementioned section.
+
+
+I am going to start working on adding a few extensible features and I am going to completely change the way the extraction tool works as well. Currently, the extraction tool is initiated by scrolling the profile page but I will add buttons for each separate section to perform the extraction separately and manually at the click of a button. For now that seems to be the only possible solution in my mind to perform scraping with no conflicts.
