@@ -5,6 +5,9 @@ Yal§ or Yale3 (pronounced as Yal-crow) is a simplified version of [Rekrut](http
 
 I have added a `Save PDF` option feature which is already a linkedin feature. Just able to access that feature in the extension's slider menu.
 
+You are free to do anything with the code on the repo. Read the [license](https://github.com/DrakenWan/Yale3/blob/main/LICENSE)
+
+
 <b>Note </b> 
 
 Extraction Code in [Rekrut](https://github.com/DrakenWan/Rekrut) chrome extension has become obsolete due to several policy changes on linkedin website such as content policy and certain CSS and DOM design changes.
