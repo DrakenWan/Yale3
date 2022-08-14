@@ -507,9 +507,9 @@ function extractCert() {
      //var condn = (firstdiv.querySelector('a'))? 'a >' : '';
      var name = getCleanText(firstdiv[0].querySelector('span > span')?.textContent || "");
      var issuedby = getCleanText(firstdiv[1].querySelector('span > span')?.textContent || "");
-     var issuedon = getCleanText(firstdiv[2].querySelector('span > span')?.textContent);
-     var expiration = getCleanText(issuedon.split('·')[1]);
-     var issuedon = getCleanText(issuedon.split('·')[0].split('Issued ')[1]);
+     var issuedon = getCleanText(firstdiv[2]?.querySelector('span > span')?.textContent || "");
+     var expiration = issuedon? issuedon.split('·')[1] : "";
+     var issuedon = issuedon? issuedon.split('·')[0]?.split('Issued ')[1] || "" : "";
 
       
 
