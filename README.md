@@ -16,17 +16,17 @@ However, the server sided script can still be implemented to this day. I recomme
 Currently able to extract:-
 
 
-
-* - [x] `profile data` 
-* - [ ] `experience section` 
-* - [ ] `education section` 
-* - [ ] `certifications` 
-* - [ ] `volunteer experience` 
-* - [ ] `skills section` 
-* - [ ] `accomplishments` 
-  * - [ ] `courses`   
-  * - [ ] `projects` 
-  * - [ ] `languages` 
+         Section Name            Clean   
+* - [x] `profile data`           - [x]
+* - [x] `experience section`     - [ ]
+* - [ ] `education section`      - [ ]
+* - [x] `certifications`         - [x]
+* - [ ] `volunteer experience`   - [ ]
+* - [ ] `skills section`         - [ ]
+* - [ ] `accomplishments`        - [ ] 
+  * - [ ] `courses`              - [ ]
+  * - [ ] `projects`             - [ ]
+  * - [ ] `languages`            - [ ]
 
 
 ## Bug reporting
@@ -44,3 +44,8 @@ I have migrated the manifest version from 2 to 3 for the extension. The version 
 
 
 I am going to start working on adding a few extensible features and I am going to completely change the way the extraction tool works as well. Currently, the extraction tool is initiated by scrolling the profile page but I will add buttons for each separate section to perform the extraction separately and manually at the click of a button. For now that seems to be the only possible solution in my mind to perform scraping with no conflicts.
+
+
+#### Update (dated: 14th August, 2022)
+
+I have added a button to manually extract certifications. I have not been able to get any errors using this `manual feature` on the 10 standard reference LinkedIn profiles while coding it. The manual extraction utility includes a **deepscan** feature. If a section has more than three items in its list then the user can click on *deepscan checkbox* and click on the _show more arrow_ to open the new page with the entire list of items of the section and then press the `extract {section name}` button. Experiment around with the feature and you will understand how it works. I will add this feature one-by-one for all sections for easier scraping of profile data.

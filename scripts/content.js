@@ -23,6 +23,30 @@ function main() {
     // define any VARIABLES below here
     var data = {};
 
+
+    // Edit this string to edit the slider div box
+    var sliderInnerHTMLString = "\
+    <div id='sheader'><h2>Header</h2><hr/></div>\
+    <div id='sbodycontainer'>\
+    <div>\
+    <label id='deepscanlabel' for='deepscan'>Deepscan?<input type='checkbox' name='deepscan' id='deepscan' value='deepscan'/></label>\
+    </div>\
+    <br/>\
+    <br/>\
+    <textarea id='objectvalue'></textarea>\
+    <br/>\
+    <h2> Licenses and Certifications </h2>\
+    <br/>\
+    <textarea id='certificationstext'></textarea>\
+    <br/>\
+    <div class='internal_button' id='certification_extract_button'>Extract Certifications</div>\
+    \
+    <hr>\
+    <div id='savepdf'>Save PDF</div>\
+    </div>\
+    <div id='sfooter'><hr/><h2>footer</h2></div>\
+    ";
+
     //////////VARIABLES END///////////
 
     //expand page sections
@@ -30,7 +54,7 @@ function main() {
 
     //generate the DOM nodes below
     //extractBtnGen();
-    sliderGen();
+    sliderGen(sliderInnerHTMLString);
      //DOM node generators above//
 
     //listener to trigger pageAction//
@@ -40,22 +64,6 @@ function main() {
       }
     });
 
-
-   
-
-    // var extractBtn = document.getElementById("extractBtn");
-    // extractBtn.addEventListener("click", function() {
-
-
-    //     //run functionalities within this nested function block
-    //     //this will trigger things everytime extractBtn is 
-    //     //clicked.
-    //     //slider(); //this will toggle slider bar into the window
-
-    //     data = extract(); //trigger on clicking toggle as well
-    //     var frame = document.getElementById("slider");
-    //     frame.textContent = JSON.stringify(data)
-    // } );
 
 
     //Added this as a temporary solution
@@ -79,7 +87,7 @@ function main() {
     
   //run savePDF option
   document.getElementById('savepdf').addEventListener("click", savePDF);
-  
+  document.getElementById('certification_extract_button').addEventListener("click", extractCert);
 }
 
 
@@ -95,23 +103,10 @@ function extractBtnGen() {
 }
 
 //slider window element generator
-function sliderGen() {
+function sliderGen(sliderInnerHTMLString) {
     var slider = document.createElement("div");
     slider.id = "slider";
-    //slider.src = chrome.extension.getURL("./views/slider.html");
-    //var sliderFileUrl = chrome.extension.getURL("/views/slider.html");
-    //alert(sliderFileUrl)
-    //append slider to webpage
-
-    var sliderDivInnerHTML = "\
-    <div id='sheader'><h2>Header</h2><hr/></div>\
-    <div id='sbodycontainer'>\
-    <textarea id='objectvalue'></textarea>\
-    <hr>\
-    <div id='savepdf'>Save PDF</div>\
-    </div>\
-    <div id='sfooter'><hr/><h2>footer</h2></div>\
-    ";
+    var sliderDivInnerHTML = sliderInnerHTMLString;
 
     slider.innerHTML += sliderDivInnerHTML;
 
@@ -458,6 +453,87 @@ function savePDF() {
    }
 
 }
+
+
+function extractCert() {
+  var anchor1 = document.getElementById('licenses_and_certifications');
+  var anchor2 = document.querySelector('.pvs-list');
+
+  var list = null;
+  var certs = [];
+  
+
+  if(anchor1) {
+    anchor1 = anchor1.nextElementSibling.nextElementSibling
+    list = anchor1.querySelector('ul').children;
+  }
+
+  if(anchor2 && document.getElementById('deepscan').checked) {
+    list = anchor2.children;
+  }
+
+  if(list) { //if the anchor exists
+    for(i=0; i<list.length; i++) {
+      var elem = null;
+      var firstdiv = null;
+      var url = "";
+
+      if(anchor1 && !document.getElementById('deepscan').checked) {
+        //alert("anchor1");
+        elem = list[i].firstElementChild.firstElementChild.nextElementSibling
+                        .querySelectorAll('div');
+        
+        if(elem[0].querySelector('a')){
+          firstdiv = elem[0].querySelector('a').children;
+        } else {
+          firstdiv = elem[1].children;
+        }
+        
+
+        url = elem[4]?.querySelector('a')?.href || "";
+        //if anchor1
+      } 
+      else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked) {
+        //alert("anchor2s");
+        elem = list[i].querySelector('div > div').nextElementSibling;
+        firstdiv = elem.firstElementChild.firstElementChild.children;
+
+        url = elem.firstElementChild.nextElementSibling?.querySelector('a').href || "";
+      } //if anchor2
+      else {
+        break;
+      }
+      
+     //var condn = (firstdiv.querySelector('a'))? 'a >' : '';
+     var name = getCleanText(firstdiv[0].querySelector('span > span')?.textContent || "");
+     var issuedby = getCleanText(firstdiv[1].querySelector('span > span')?.textContent || "");
+     var issuedon = getCleanText(firstdiv[2].querySelector('span > span')?.textContent);
+     var expiration = getCleanText(issuedon.split('·')[1]);
+     var issuedon = getCleanText(issuedon.split('·')[0].split('Issued ')[1]);
+
+      
+
+      var temp = {
+        'id': i,
+        'title': name,
+        'issuer':issuedby,
+        'date':issuedon,
+        'expiration': expiration,
+        'link': url
+      };
+
+      certs.push(temp);
+
+    } //for loop to scrape through the list 
+  }
+  var objtemp = {
+    'name': 'licenses',
+    'data': certs
+  }
+
+  document.getElementById('certificationstext').value = JSON.stringify(objtemp);
+} //license extraction
+
 
 //////////// *---- UTILS -----* //////////////
 // Utility functions
