@@ -16,17 +16,16 @@ However, the server sided script can still be implemented to this day. I recomme
 Currently able to extract:-
 
 
-         Section Name            Clean   
-* - [x] `profile data`           - [x]
-* - [x] `experience section`     - [ ]
-* - [ ] `education section`      - [ ]
-* - [x] `certifications`         - [x]
-* - [ ] `volunteer experience`   - [ ]
-* - [ ] `skills section`         - [ ]
-* - [ ] `accomplishments`        - [ ] 
-  * - [ ] `courses`              - [ ]
-  * - [ ] `projects`             - [ ]
-  * - [ ] `languages`            - [ ]
+Section Name       |      Can Extract?      | Clean?   
+:----------------- | :-----------------     | :-----------------
+`profile data`     |     :heavy_check_mark: | :heavy_check_mark:
+`experience section`|     :heavy_check_mark: | :heavy_cross_mark:
+`education section` |     :heavy_cross_mark: | :heavy_cross_mark:
+`certifications`  |     :heavy_check_mark: | :heavy_check_mark:
+`volunteer experience`|    :heavy_cross_mark:| :heavy_cross_mark:
+`skills section`  |  :heavy_cross_mark: |:heavy_cross_mark:      
+`accomplishments` |  :heavy_cross_mark: |:heavy_cross_mark:     
+
 
 
 ## Bug reporting
