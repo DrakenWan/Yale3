@@ -13,24 +13,25 @@ However, the server sided script can still be implemented to this day. I recomme
 ## Extraction
 
 
-Currently able to extract:-
-
-
 Section Name       |      Can Extract?      | Clean?   
 :----------------- | :-----------------     | :-----------------
-`profile data`     |     :heavy_check_mark: | :heavy_check_mark:
-`experience section`|     :heavy_check_mark: | :x:
-`education section` |     :x: | :x:
-`certifications`  |     :heavy_check_mark: | :heavy_check_mark:
-`volunteer experience`|     :x: | :x:
-`skills section`  |     :x: | :x:     
-`accomplishments` |     :x: | :x:  
+*profile data*    |     :heavy_check_mark: | :heavy_check_mark:
+*experience section*|     :heavy_check_mark: | :x:
+*education section*|     :x: | :x:
+*certifications* |     :heavy_check_mark: | :heavy_check_mark:
+*volunteer experience*|     :x: | :x:
+*skills section*  |     :x: | :x:     
+*accomplishments* |     :x: | :x:  
 
 
 
 ## Bug reporting
 I strive to make the code as general as possible but the extractor tool may not be perfect. If you find any bug on any profile please let me know in [issues](https://github.com/DrakenWan/Yale3/issues) section.
 
+
+## Update Timeline
+
+I will keep posting timed updates here. In future will shift these somewhere else if I have time
 
 #### Update (dated: 9th January, 2022)
 
