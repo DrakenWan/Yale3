@@ -19,12 +19,12 @@ Currently able to extract:-
 Section Name       |      Can Extract?      | Clean?   
 :----------------- | :-----------------     | :-----------------
 `profile data`     |     :heavy_check_mark: | :heavy_check_mark:
-`experience section`|     :heavy_check_mark: | :heavy_cross_mark:
-`education section` |     :heavy_cross_mark: | :heavy_cross_mark:
+`experience section`|     :heavy_check_mark: | :x:
+`education section` |     :x: | :x:
 `certifications`  |     :heavy_check_mark: | :heavy_check_mark:
-`volunteer experience`|    :heavy_cross_mark:| :heavy_cross_mark:
-`skills section`  |  :heavy_cross_mark: |:heavy_cross_mark:      
-`accomplishments` |  :heavy_cross_mark: |:heavy_cross_mark:     
+`volunteer experience`|     :x: | :x:
+`skills section`  |     :x: | :x:     
+`accomplishments` |     :x: | :x:  
 
 
 
