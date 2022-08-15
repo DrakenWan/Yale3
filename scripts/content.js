@@ -92,7 +92,8 @@ function main() {
     bodycontainer.value = JSON.stringify(data)
     
     bodycontainer = document.getElementById("slider").querySelector("#sheaderheader");
-    var uname = document?.querySelector('div.pv-text-details__left-panel > div > h1').textContent || "";
+    var uname = document?.querySelector('div.pv-text-details__left-panel > div > h1') || null;
+    uname = uname?.textContent || "";
     bodycontainer.innerHTML = "<h1>"+uname+"</h1>";
     window.onscroll = function() {
         data = extract();
@@ -102,7 +103,8 @@ function main() {
         bodycontainer.value = JSON.stringify(data)
 
         bodycontainer = document.getElementById("slider").querySelector("#sheaderheader");
-        var uname = document?.querySelector('div.pv-text-details__left-panel > div > h1').textContent || "";
+        var uname = document?.querySelector('div.pv-text-details__left-panel > div > h1') || null;
+        uname = uname?.textContent || "";
         bodycontainer.innerHTML = "<h1>"+uname+"</h1>";
     } 
     
@@ -474,7 +476,7 @@ function extractCert() {
     list = anchor1.querySelector('ul').children;
   }
 
-  if(anchor2 && document.getElementById('deepscan').checked) {
+  if(anchor2 && document.getElementById('deepscan').checked && location.href.includes('certifications')) {
     list = anchor2.children;
   }
 
@@ -499,15 +501,12 @@ function extractCert() {
         url = elem[4]?.querySelector('a')?.href || "";
         //if anchor1
       } 
-      else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked) {
+      else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked  && location.href.includes('certifications')) {
         //alert("anchor2s");
         elem = list[i].querySelector('div > div').nextElementSibling;
         firstdiv = elem.firstElementChild.firstElementChild.children;
 
-        url = elem.firstElementChild;
-        if(url) url = url.nextElementSibling.querySelector('a');
-        if(url) url = url?.href || "";
-        else url = "";
+        url = elem.firstElementChild.nextElementSibling?.querySelector('a').href || "";
       } //if anchor2
       else {
         break;
@@ -578,7 +577,8 @@ function extractSkills() {
         
         
       }// anchor1 ends here
-      else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked) {
+      else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked &&
+      location.href.includes('skills')) {
         elem = list[i].querySelector('div > div').nextElementSibling;
         elem = elem.firstElementChild.firstElementChild.children;
 
