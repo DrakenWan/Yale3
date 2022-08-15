@@ -6,7 +6,7 @@
 
     background-color : cornflowerblue;
     width : 0px;
-    transition: 0.5s;
+    transition: 0.4s;
 
     height: 100vh; 
     overflow-y : auto;
@@ -16,8 +16,16 @@
 /* Slider header, footer and body tags below */
 /* add css stylesheets for slider child elements below*/
 #sheader {
+    position: sticky;
     top: 0;
-    color: white;
+    padding: 20px;
+    background-color: #052536;
+    text-align:center;
+    z-index: 5;
+}
+
+#sheader > div > h1 {
+    color: white !important;
 }
 
 #sbodycontainer {
@@ -80,13 +88,30 @@
 
 
 #deepscan {
-    position: absolute;
     padding: 10px;
     opacity: 100% !important;
+}
+
+#deepscancontainer {
+    position: sticky !important;
+    z-index: 5;
 }
 
 #deepscanlabel {
     color: white;
     padding: 15px;
     border: 1px solid rgb(100, 237, 223);
+}
+
+textarea {
+    margin: 1px;
+    padding-right: 20px;
+    border: 2px solid black;
+    height: 250px !important;
+    
+}
+
+textarea:hover {
+    background-color: rgb(178, 197, 231);
+    border: 2px solid rgb(27, 15, 49);
 }

@@ -20,17 +20,22 @@ main();
 //trigger different functionalities in main functions
 function main() {
     
+    ///////// VARIABLES //////////
     // define any VARIABLES below here
     var data = {};
 
 
-    // Edit this string to edit the slider div box
+    // Edit this string to edit the slider popup (appears on clicking extension
+    // icon)
     var sliderInnerHTMLString = "\
-    <div id='sheader'><h2>Header</h2><hr/></div>\
-    <div id='sbodycontainer'>\
-    <div>\
+    <div id='sheader'>\
+    <div id='sheaderheader'></div>\
+    <div id='deepscancontainer'>\
     <label id='deepscanlabel' for='deepscan'>Deepscan?<input type='checkbox' name='deepscan' id='deepscan' value='deepscan'/></label>\
     </div>\
+    </div>\
+    <br/>\
+    <div id='sbodycontainer'>\
     <br/>\
     <br/>\
     <textarea id='objectvalue'></textarea>\
@@ -42,6 +47,11 @@ function main() {
     <div class='internal_button' id='certification_extract_button'>Extract Certifications</div>\
     \
     <hr>\
+    <h2> Skills </h3>\
+    <br/>\
+    <textarea id='skillstext'></textarea>\
+    <br/>\
+    <div class='internal_button' id='skills_extract_button'>Extract Skills</div>\
     <div id='savepdf'>Save PDF</div>\
     </div>\
     <div id='sfooter'><hr/><h2>footer</h2></div>\
@@ -53,11 +63,14 @@ function main() {
     //expandButtons();
 
     //generate the DOM nodes below
-    //extractBtnGen();
-    sliderGen(sliderInnerHTMLString);
-     //DOM node generators above//
+    
 
-    //listener to trigger pageAction//
+    sliderGen(sliderInnerHTMLString);
+
+    //DOM node generators above//
+
+
+    //listener to trigger action//
     chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
       if(msg.todo == "toggle") {
         slider();
@@ -76,18 +89,30 @@ function main() {
     data = extract();   
     var bodycontainer = document.getElementById("slider").querySelector("#sbodycontainer");
     bodycontainer = bodycontainer.querySelector("#objectvalue")
-    bodycontainer.value = JSON.stringify(data)                      
+    bodycontainer.value = JSON.stringify(data)
+    
+    bodycontainer = document.getElementById("slider").querySelector("#sheaderheader");
+    var uname = document?.querySelector('div.pv-text-details__left-panel > div > h1').textContent || "";
+    bodycontainer.innerHTML = "<h1>"+uname+"</h1>";
     window.onscroll = function() {
         data = extract();
         //alert(JSON.stringify(data));
         var bodycontainer = document.getElementById("slider").querySelector("#sbodycontainer");
         bodycontainer = bodycontainer.querySelector("#objectvalue")
-        bodycontainer.value = JSON.stringify(data)       
-    }
+        bodycontainer.value = JSON.stringify(data)
+
+        bodycontainer = document.getElementById("slider").querySelector("#sheaderheader");
+        var uname = document?.querySelector('div.pv-text-details__left-panel > div > h1').textContent || "";
+        bodycontainer.innerHTML = "<h1>"+uname+"</h1>";
+    } 
     
   //run savePDF option
   document.getElementById('savepdf').addEventListener("click", savePDF);
+
+
+  //deploying listeners for `manual extraction` buttons feature
   document.getElementById('certification_extract_button').addEventListener("click", extractCert);
+  document.getElementById('skills_extract_button').addEventListener("click", extractSkills);
 }
 
 
@@ -95,12 +120,12 @@ function main() {
 
 
 //extract btn generator
-function extractBtnGen() {
-    var extractBtn = document.createElement("div");
-    extractBtn.textContent = "Toggle Frame";
-    extractBtn.id = "extractBtn";
-    document.querySelector("#global-nav").append(extractBtn)
-}
+// function extractBtnGen() {
+//     var extractBtn = document.createElement("div");
+//     extractBtn.textContent = "Toggle Frame";
+//     extractBtn.id = "extractBtn";
+//     document.querySelector("#global-nav").append(extractBtn)
+// }
 
 //slider window element generator
 function sliderGen(sliderInnerHTMLString) {
@@ -371,27 +396,6 @@ function extract() {
   }
 
   ////Accomplishments extraction ends here
-  
-  ///Licences and Certifications Extraction///
-  var certnodes = document.querySelectorAll(".pv-profile-section--certifications-section > ul > li");
-  var certs = [];
-  if(certnodes) { //if the section exists or nah
-    for(var nodo of certnodes) {
-      var summ1 = nodo.querySelector("div.pv-certifications__summary-info--has-extra-details");
-      var summ2 = nodo.querySelector("div.pv-entity__extra-details");
-      
-      var certtitle = summ1?.querySelector("h3")?.textContent || null;
-      var credurl = summ2?.querySelector("a").href || null;
-
-      certs.push(
-        {
-          "title": getCleanText(certtitle),
-          "url": credurl
-        }
-      );
-    }//for loop ends
-  }
-  ///L&C extraction ends here///
 
 
   ///VOLUNTEER EXPERIENCE EXTRACTION///
@@ -425,16 +429,17 @@ function extract() {
       "profileData": profileData,
       "experiences": experiences,
       "education": education,
-      "certifications": certs,
       "volunteer_experience": volunteer_experience,
       "skills": skills,
       "accomplishments" : accomplishments
   }
 
+  
   return userProfile;
 }//Extract() functions ends here
 
 
+// Save PDF document of a linkedinProfile
 function savePDF() {
   var spanList = document.getElementsByTagName("span");
   var m = [];
@@ -455,6 +460,7 @@ function savePDF() {
 }
 
 
+// Extract license and certifications
 function extractCert() {
   var anchor1 = document.getElementById('licenses_and_certifications');
   var anchor2 = document.querySelector('.pvs-list');
@@ -498,7 +504,10 @@ function extractCert() {
         elem = list[i].querySelector('div > div').nextElementSibling;
         firstdiv = elem.firstElementChild.firstElementChild.children;
 
-        url = elem.firstElementChild.nextElementSibling?.querySelector('a').href || "";
+        url = elem.firstElementChild;
+        if(url) url = url.nextElementSibling.querySelector('a');
+        if(url) url = url?.href || "";
+        else url = "";
       } //if anchor2
       else {
         break;
@@ -532,7 +541,89 @@ function extractCert() {
   }
 
   document.getElementById('certificationstext').value = JSON.stringify(objtemp);
-} //license extraction
+} //license extraction ends here
+
+
+// Extract Skills 
+function extractSkills() {
+
+  //defining anchors (roots from where scraping starts)
+  var anchor1 = document.getElementById("skills");
+  var anchor2 = document.querySelector('.pvs-list');
+
+  var list = null;
+  var skills = [];
+  
+  if(anchor1) {
+    anchor1 = anchor1.nextElementSibling.nextElementSibling
+    list = anchor1.querySelector('ul').children;
+  }
+
+  if(anchor2 && document.getElementById('deepscan').checked) {
+    list = anchor2.children;
+  }
+
+  if(list) { //if the anchor exists
+    for(i=0; i<list.length; i++) {
+      var elem = null;
+      //var firstdiv = null;
+
+      if(anchor1 && !document.getElementById('deepscan').checked) {
+        //alert("anchor1");
+        elem = list[i].firstElementChild.firstElementChild.nextElementSibling
+                        .querySelectorAll('div');
+        
+        var index = 0;
+        elem = getCleanText(elem[index]?.querySelector('div > span > span').textContent || "");
+        
+        
+      }// anchor1 ends here
+      else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked) {
+        elem = list[i].querySelector('div > div').nextElementSibling;
+        elem = elem.firstElementChild.firstElementChild.children;
+
+        elem = getCleanText(elem[0]?.querySelector('div > span > span').textContent || "");
+
+      } //anchor2 ends here
+      else { //exit
+        break;
+      }
+
+      skills.push(
+        {
+          'id': i,
+          'title': elem
+        }
+      );
+    } //for loop
+
+
+  } //if `the list from anchor exists` condn ends here
+
+
+  var objtemp = {
+    'name': 'skills',
+    'data': skills
+  };
+
+  document.getElementById('skillstext').value = JSON.stringify(objtemp);
+} //Extraction of skills ends here
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //////////// *---- UTILS -----* //////////////

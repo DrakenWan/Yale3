@@ -23,7 +23,7 @@ Section Name       |      Can Extract?      | Clean?
 *education section*|     :x: | :x:
 *certifications* |     :heavy_check_mark: | :heavy_check_mark:
 *volunteer experience*|     :x: | :x:
-*skills section*  |     :x: | :x:     
+*skills section*  |     :heavy_check_mark: | :heavy_check_mark:
 *accomplishments* |     :x: | :x:  
 
 
@@ -52,3 +52,8 @@ I am going to start working on adding a few extensible features and I am going t
 #### Update (dated: 14th August, 2022)
 
 I have added a button to manually extract certifications. I have not been able to get any errors using this `manual feature` on the 10 standard reference LinkedIn profiles while coding it. The manual extraction utility includes a **deepscan** feature. If a section has more than three items in its list then the user can click on *deepscan checkbox* and click on the _show more arrow_ to open the new page with the entire list of items of the section and then press the `extract {section name}` button. Experiment around with the feature and you will understand how it works. I will add this feature one-by-one for all sections for easier scraping of profile data.
+
+
+### Update (dated: 15th August, 2022)
+
+Added skills extraction. Changed the UI a bit. The UI is still ugly. If someone wants to help with it they are more than welcome.
