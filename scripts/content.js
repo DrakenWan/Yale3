@@ -25,9 +25,11 @@ function main() {
     var data = {};
 
 
-    // Edit this string to edit the slider popup (appears on clicking extension
+    // Edit this string to edit the slider popup 
+    // (appears on clicking extension
     // icon)
     var sliderInnerHTMLString = "\
+    <!-- HEADER IS HERE -->\
     <div id='sheader'>\
     <div id='sheaderheader'></div>\
     <div id='deepscancontainer'>\
@@ -35,11 +37,20 @@ function main() {
     </div>\
     </div>\
     <br/>\
+    \
+    \
+    <!-- THE BODY CONTAINER IS HERE -->\
     <div id='sbodycontainer'>\
     <br/>\
     <br/>\
     <textarea id='objectvalue'></textarea>\
     <br/>\
+    <h2> Experience Section </h2>\
+    <br\>\
+    <textarea id='experiencetext'></textarea>\
+    <br/>\
+    <div class='internal_button' id='experience_extract_button'>Extract Work Ex</div>\
+    <hr/>\
     <h2> Licenses and Certifications </h2>\
     <br/>\
     <textarea id='certificationstext'></textarea>\
@@ -54,6 +65,9 @@ function main() {
     <div class='internal_button' id='skills_extract_button'>Extract Skills</div>\
     <div id='savepdf'>Save PDF</div>\
     </div>\
+    \
+    \
+    <!-- THE FOOTER IS HERE -->\
     <div id='sfooter'><hr/><h2>footer</h2></div>\
     ";
 
@@ -70,7 +84,8 @@ function main() {
     //DOM node generators above//
 
 
-    //listener to trigger action//
+    //listener to trigger action - which is to push in/out 
+    //the slider
     chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
       if(msg.todo == "toggle") {
         slider();
@@ -115,6 +130,7 @@ function main() {
   //deploying listeners for `manual extraction` buttons feature
   document.getElementById('certification_extract_button').addEventListener("click", extractCert);
   document.getElementById('skills_extract_button').addEventListener("click", extractSkills);
+  document.getElementById('experience_extract_button').addEventListener("click", extractExperience);
 }
 
 
@@ -175,7 +191,7 @@ function extract() {
 
     var tbs = profileSection?.querySelectorAll(".text-body-small")
     const locationElement = ((tbs) ? tbs[1] : null)
-    var location = locationElement?.textContent || null
+    var loc = locationElement?.textContent || null
 
     const photoElement = document.querySelector(".pv-top-card-profile-picture__image") || profileSection?.querySelector('.profile-photo-edit__preview')
     const photo = photoElement?.getAttribute('src') || null
@@ -188,7 +204,7 @@ function extract() {
     var rawProfileData = {
         fullName,
         title,
-        location,
+        loc,
         photo,
         description,
         url
@@ -197,81 +213,12 @@ function extract() {
     var profileData = {
         fullName: getCleanText(rawProfileData.fullName),
         title: getCleanText(rawProfileData.title),
-        location: getCleanText(rawProfileData.location),
+        location: getCleanText(rawProfileData.loc),
         description: getCleanText(rawProfileData.description),
         photo: rawProfileData.photo,
         url: rawProfileData.url
     }
     ///extraction of profile data ends here///
-
-    ///extraction of experiences below
-    var nodes = document.querySelector('div#experience')?.parentElement.querySelectorAll('ul.pvs-list > li.artdeco-list__item > div.pvs-entity') || [];
-    //alert(JSON.stringify(nodes));
-    let UwU = [] //init array of uwu company data
-    
-    //loop over nodes to push data in UwU
-    for (const node of nodes) {
-      
-      let experiences = node.querySelectorAll('span.visually-hidden');
-
-      let experiences_strings = []
-
-      for (const experience of experiences) { 
-        // console.log(experience.textContent);
-        experiences_strings.push(experience.textContent);
-      }
-
-      const titleElement = node.querySelector('h3');
-      var title = titleElement?.textContent || null
-      title = getCleanText(title);
-
-      const employmentTypeElement = node.querySelector('span.pv-entity__secondary-title');
-      var employmentType = employmentTypeElement?.textContent || null
-      employmentType = getCleanText(employmentType);
-
-      const companyElement = node.querySelector('.pv-entity__secondary-title');
-      const companyElementClean = (companyElement && companyElement?.querySelector('span') ) ? (companyElement?.removeChild(companyElement.querySelector('span') )  && companyElement ): (companyElement || null);
-      var company = companyElementClean?.textContent || null
-      company = getCleanText(company);
-
-      const descriptionElement = node.querySelector('.pv-entity__description');
-      var description = descriptionElement?.textContent || null
-      description = getCleanText(description);
-
-      const dateRangeElement = node.querySelector('.pv-entity__date-range span:nth-child(2)');
-      const dateRangeText = dateRangeElement?.textContent || null
-
-      const startDatePart = dateRangeText?.split('–')[0] || null;
-      const startDate = startDatePart?.trim() || null;
-
-      const endDatePart = dateRangeText?.split('–')[1] || null;
-      const endDateIsPresent = endDatePart?.trim().toLowerCase() === 'present' || false;
-      const endDate = (endDatePart && !endDateIsPresent) ? endDatePart.trim() : 'Present';
-
-      const locationElement = node.querySelector('.pv-entity__location span:nth-child(2)');
-      var location = locationElement?.textContent || null;
-      location = getCleanText(location);
-            
-      // //UwU push!
-      // UwU.push({
-      //     title,
-      //     company,
-      //     employmentType,
-      //     location,
-      //     startDate,
-      //     endDate,
-      //     endDateIsPresent,
-      //     description
-      // });
-
-      UwU.push(experiences_strings);
-
-    
-    }//loop ends here
-
-    var experiences = UwU;
-    //extraction of experiences ends here//
-
     // extracting education section
     var nodes = $("#education-section ul > .ember-view");
     let education = [];
@@ -311,32 +258,7 @@ function extract() {
       })
     }
     //extraction of education ends here
-    
 
-    //extraction of skills starts
-    let skills = [];
-    var skillNameNodes = document.querySelectorAll('.pv-skill-category-entity__name-text');
-    var endorsementCountNodes = document.querySelectorAll('.pv-skill-category-entity__endorsement-count');
-    
-    for(var i=0; i<skillNameNodes.length; i++)
-      {
-        if(endorsementCountNodes[i]) {
-        skills.push(
-          {
-            "skillName": getCleanText(skillNameNodes[i].textContent),
-            "endorsementCount": endorsementCountNodes[i].textContent
-          }
-        );
-      } else {
-        skills.push(
-          {
-            "skillName": getCleanText(skillNameNodes[i].textContent),
-            "endorsementCount": "0"
-          }
-          );
-      }
-    }
-   //extraction fo skills ends here 
 
    ///extraction of accomplishments (courses, test scores, projects,
    ///                               Languages, honor-awards)
@@ -429,10 +351,8 @@ function extract() {
   //add in the extracted object values here
   userProfile = {
       "profileData": profileData,
-      "experiences": experiences,
       "education": education,
       "volunteer_experience": volunteer_experience,
-      "skills": skills,
       "accomplishments" : accomplishments
   }
 
@@ -553,12 +473,12 @@ function extractSkills() {
   var list = null;
   var skills = [];
   
-  if(anchor1) {
+  if(anchor1 && !document.getElementById('deepscan').checked) {
     anchor1 = anchor1.nextElementSibling.nextElementSibling
     list = anchor1.querySelector('ul').children;
   }
 
-  if(anchor2 && document.getElementById('deepscan').checked) {
+  if(anchor2 && document.getElementById('deepscan').checked && location.href.includes('skills')) {
     list = anchor2.children;
   }
 
@@ -613,10 +533,132 @@ function extractSkills() {
 
 
 
+// Extract Experience /////
+
+function extractExperience() {
+  //defining anchors (roots from where scraping starts)
+  var anchor1 = document.getElementById("experience");
+  var anchor2 = document.querySelector('.pvs-list');
+
+  var list = null;
+  var exp = [];
+  var roles = [];
+  var company = "";
+
+  if(anchor1 && !document.getElementById('deepscan').checked) {
+    anchor1 = anchor1.nextElementSibling.nextElementSibling
+    list = anchor1.querySelector('ul').children;
+  } 
+
+  if(anchor2 && document.getElementById('deepscan').checked && location.href.includes('experience')) {
+    list = anchor2.children;
+  } 
+
+
+  
+  if(list) { //if the anchor exists
+    for(i=0; i<list.length; i++) {
+      if(document.getElementById('deepscan').checked && !location.href.includes('experience'))
+        break;
+      company = "";
+      roles = [];
+
+
+      var elem = list[i].querySelector('div > div').nextElementSibling; //for anchor 1
+      if(elem.querySelector('div > a')) {
+        // condition for multiple roles in same company
+        company = elem.querySelector('div > a > div > span > span')?.textContent || "";
+        company = getCleanText(company);
+
+        elem = elem.firstElementChild.nextElementSibling;
+        var elems = elem.querySelector('ul').children
+
+        for(j=0; j < elems.length; j++) {
+          // traversing roles list in a company
+          
+          var keke = elems[j].querySelector("div > div")?.nextElementSibling || null;
+          keke = keke.querySelector('div > a');
+
+          kchilds = keke.children;
+          var rname=" ", startDate=" ", endDate=" ", loc=" ";
+          for(k=0; k<kchilds.length; k++) {
+
+            //each role's details taken
+            if(k==0) //role name
+              rname = kchilds[k]?.querySelector('span > span').textContent || "";
+            if(k==1) //role duration
+              {
+                var ta = kchilds[k].querySelector('span').textContent.split(/[-·]/);
+                startDate = ta[0];
+                endDate = ta[1];
+              }
+            if(k==2) //role location 
+              loc= kchilds[k].querySelector('span')?.textContent || ""; 
+              
+           } //kloop
+
+            roles.push({
+              'id': j,
+              'title': getCleanText(rname),
+              'startDate': getCleanText(startDate),
+              'endDate': getCleanText(endDate),
+              'location': getCleanText(loc)  
+            });
+
+        } // role traversal loop
+
+
+        } else { //condition when single role in one company
+          elem = elem.querySelector('div > div > div > div');
+
+          echilds = elem.children;
+          var rname=" ", startDate=" ", endDate=" ", loc=" ";
+          for(k=0; k<echilds.length; k++) {
+
+            //each role's details taken
+            if(k==0) //role name
+              rname = echilds[k]?.querySelector('span > span').textContent || "";
+            if(k==2) //role duration
+              {
+                var ta = echilds[k].querySelector('span').textContent.split(/[-·]/);
+                startDate = ta[0];
+                endDate = ta[1];
+              }
+            if(k==3) //role location 
+              loc = echilds[k].querySelector('span')?.textContent || ""; 
+            
+            if(k==1) //role company title
+              company = echilds[k].querySelector('span')?.textContent || "";
+              if(company)
+                company = company.split(/[-·]/)[0];
+           } //kloop
+           
+
+           roles.push({
+            'id': 0,
+            'title': getCleanText(rname),
+            'startDate': getCleanText(startDate),
+            'endDate': getCleanText(endDate),
+            'location': getCleanText(loc)  
+          });
 
 
 
+       } //single role else condn ends
 
+
+       a:
+       exp.push({
+        'id': i,
+        'company': company,
+        'roles': roles
+       });
+
+      }//for loop over 'i' for each item in anchor list
+  } // if list anchor exists condition
+
+ document.getElementById('experiencetext').value = JSON.stringify(exp);
+} //extract experience ends here
 
 
 
@@ -673,7 +715,7 @@ function getCleanText(text) {
   
     if (!text) return null
   
-    const cleanText = text
+    const cleanText = text.toString()
       .replace(regexRemoveLineBreaks, '')
       .replace(regexRemoveMultipleSpaces, ' ')
       .replace('...', '')
