@@ -1,0 +1,36 @@
+{
+    "name":"Yal§",
+    "version": "2.0.2",
+    "manifest_version": 3,
+    "icons": {
+        "128": "Y.png"
+     },
+    "action" : {
+        "default_title": "ext13"
+    },
+    
+    "background": {
+        "service_worker": "./scripts/events.js"
+    },
+    
+    "content_scripts": [
+        {
+            "matches": ["https://*.linkedin.com/*"],
+            "css": ["./css/content.css"],
+            "js": ["./scripts/jquery-3.6.0.min.js","./scripts/content.js"]
+        }
+    ],
+
+    "permissions": [
+        "tabs",
+        "storage",
+        "activeTab"
+    ],
+
+    "web_accessible_resources": [{
+        "resources": ["./views/slider.html", "./scripts/jquery-3.6.0.min.js"],
+        "matches": ["<all_urls>"]
+    }],
+
+    "homepage_url": "https://github.com/drakenwan/"
+}
