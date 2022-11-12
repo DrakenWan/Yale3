@@ -45,6 +45,13 @@ function main() {
     <br/>\
     <textarea id='objectvalue'></textarea>\
     <br/>\
+    <h2> Education Section </h2>\
+    <br/>\
+    <textarea id='educationtext'></textarea>\
+    <br/>\
+    <div class='internal_button' id='education_extract_button'>Extract Education</div>\
+    <hr/>\
+    \
     <h2> Experience Section </h2>\
     <br\>\
     <textarea id='experiencetext'></textarea>\
@@ -131,6 +138,7 @@ function main() {
   document.getElementById('certification_extract_button').addEventListener("click", extractCert);
   document.getElementById('skills_extract_button').addEventListener("click", extractSkills);
   document.getElementById('experience_extract_button').addEventListener("click", extractExperience);
+  document.getElementById('education_extract_button').addEventListener("click", extractEducation);
 }
 
 
@@ -423,7 +431,7 @@ function extractCert() {
       } 
       else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked  && location.href.includes('certifications')) {
         //alert("anchor2s");
-        elem = list[i].querySelector('div > div').nextElementSibling;
+        elem = list[i].querySelector('div > div').firstElementChild.nextElementSibling;
         firstdiv = elem.firstElementChild.firstElementChild.children;
 
         url = elem.firstElementChild.nextElementSibling?.querySelector('a').href || "";
@@ -499,7 +507,7 @@ function extractSkills() {
       }// anchor1 ends here
       else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked &&
       location.href.includes('skills')) {
-        elem = list[i].querySelector('div > div').nextElementSibling;
+        elem = list[i].querySelector('div > div').firstElementChild.nextElementSibling;
         elem = elem.firstElementChild.firstElementChild.children;
 
         elem = getCleanText(elem[0]?.querySelector('div > span > span').textContent || "");
@@ -539,7 +547,7 @@ function extractExperience() {
   //defining anchors (roots from where scraping starts)
   var anchor1 = document.getElementById("experience");
   var anchor2 = document.querySelector('.pvs-list');
-
+  
   var list = null;
   var exp = [];
   var roles = [];
@@ -564,7 +572,7 @@ function extractExperience() {
       roles = [];
 
 
-      var elem = list[i].querySelector('div > div').nextElementSibling; //for anchor 1
+      var elem = list[i].querySelector('div > div').firstElementChild.nextElementSibling; //for anchor 1
       if(elem.querySelector('div > a')) {
         // condition for multiple roles in same company
         company = elem.querySelector('div > a > div > span > span')?.textContent || "";
@@ -659,6 +667,36 @@ function extractExperience() {
 
  document.getElementById('experiencetext').value = JSON.stringify(exp);
 } //extract experience ends here
+
+
+// Extract Experience //
+
+function extractEducation(){
+   //defining anchors (roots from where scraping starts)
+   var anchor1 = document.getElementById("education");
+   var anchor2 = document.querySelector('.pvs-list');
+  
+   var list = null;
+
+   if(anchor1 && !document.getElementById('deepscan').checked) {
+      anchor1 = anchor1.nextElementSibling.nextElementSibling
+      list = anchor1.querySelector('ul').children;
+    } 
+
+  if(anchor2 && document.getElementById('deepscan').checked && location.href.includes('experience')) {
+      list = anchor2.children;
+    } 
+
+  if(list) { //if the anchor exists
+    for(i=0; i<list.length; i++) {
+      if(document.getElementById('deepscan').checked && !location.href.includes('experience'))
+        break;
+      
+    }// for loops
+  } // if
+  
+} //extract education ends here
+
 
 
 
