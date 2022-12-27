@@ -16,15 +16,15 @@ However, the server sided script can still be implemented to this day. I recomme
 ## Extraction
 
 
-Section Name       |      Can Extract?      | Clean?   
-:----------------- | :-----------------     | :-----------------
-*profile data*    |     :heavy_check_mark: | :heavy_check_mark:
-*experience section*|     :heavy_check_mark: | :heavy_check_mark:
-*education section*|     :x: | :x:
-*certifications* |     :heavy_check_mark: | :heavy_check_mark:
-*volunteer experience*|     :x: | :x:
-*skills section*  |     :heavy_check_mark: | :heavy_check_mark:
-*accomplishments* |     :x: | :x:  
+Section Name       |      Can Extract?      | Clean?              | Deepscan Extraction?
+:----------------- | :-----------------     | :-----------------  | :------------------
+*profile data*    |     :heavy_check_mark: | :heavy_check_mark:   |  :heavy_check_mark:
+*experience section*|     :x: | :x: | :heavy_check_mark:
+*education section*|     :x: | :x: | :x:
+*certifications* |     :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
+*volunteer experience*|     :x: | :x: | :x:
+*skills section*  |     :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
+*accomplishments* |     :x: | :x:  | :x:
 
 
 
@@ -38,6 +38,8 @@ I strive to make the code as general as possible but the extractor tool may not 
 I will keep posting timed updates here. In future will shift these somewhere else if I have time
 
 #### Update(dated: 27th December, 2022)
+
+Apparently, the HTML code for `experience section` has been changed by a slight. But that is huge since experience section was hardest to generalize for me. It will take time to make further correction to it. The deepscan extraction still works for this section since the HTML document for all of them new pages is same and not changed.
 
 I am going to start working on extracting the other sections of the linkedin profile. I noticed that a lot of redundant code has been left by me and which might mislead some of you (who dive into the code) into thinking some of this redundant code is being used which is not the case. I will start in removing some of this redundant code with small minor updates. Some of that code might be useful so I will take my time in removing it. Most of the old Yale3 code has been replaced by new one in commits I believe I made around mid-August of 2022. It was when I migrated the extension from manifest v2 to v3.
 
