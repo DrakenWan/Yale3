@@ -37,6 +37,10 @@ I strive to make the code as general as possible but the extractor tool may not 
 
 I will keep posting timed updates here. In future will shift these somewhere else if I have time
 
+#### Update(dated: 27th December, 2022)
+
+I am going to start working on extracting the other sections of the linkedin profile. I noticed that a lot of redundant code has been left by me and which might mislead some of you (who dive into the code) into thinking some of this redundant code is being used which is not the case. I will start in removing some of this redundant code with small minor updates. Some of that code might be useful so I will take my time in removing it. Most of the old Yale3 code has been replaced by new one in commits I believe I made around mid-August of 2022. It was when I migrated the extension from manifest v2 to v3.
+
 #### Update(dated: 12th November, 2022)
 
 Some minor error fixing due to HTML changes. Currently not able to conceive extraction codes for remaining sections due to heavy school schedule. Feel free to contribute if anyone wants to. I will try to create codes for them asap
