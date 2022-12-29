@@ -83,7 +83,9 @@ function main() {
     \
     \
     <!-- THE FOOTER IS HERE -->\
-    <div id='sfooter'><hr/><h2>footer</h2></div>\
+    <div id='sfooter'><hr/>\
+    <div class='internal_button' id='save_profile_data_button'>Save Profile Data</div>\
+    </div>\
     ";
 
     //////////VARIABLES END///////////
@@ -118,6 +120,7 @@ function main() {
   });
 
 
+
   window.onmousemove = function () {
     // any heavyduty function added here might create an overhead or slowing down.
     printName();
@@ -132,12 +135,44 @@ function main() {
   document.getElementById('certification_extract_button').addEventListener("click", extractCert);
   document.getElementById('skills_extract_button').addEventListener("click", extractSkills);
   document.getElementById('experience_extract_button').addEventListener("click", extractExperience);
-  document.getElementById('education_extract_button').addEventListener("click", extractEducation);
+  document.getElementById('education_extract_button').addEventListener("click", extractEducation);4
+
+
+  //save data button
+  document.getElementById('save_profile_data_button').addEventListener("click", saveProfileData);
+
 } //MAIN FUNCTION ENDS HERE //
 
 
 //*=======================================================*//
 
+function saveProfileData() {
+  var textBoxIds = ['basicprofile', 'educationtext', 'experiencetext', 'skillstext', 'certificationstext'];
+  var profileData = {};
+  for(var i=0; i<textBoxIds.length; i++) {
+    var tempid = textBoxIds[i];
+    if(tempid.includes("text"))
+      tempid = tempid.replace("text", "")
+    
+    if(document.getElementById(textBoxIds[i]).value)
+      profileData[tempid] = JSON.parse(document.getElementById(textBoxIds[i]).value);
+    else
+      profileData[tempid] = "No data";
+  }
+
+   // download file code
+   var filename = prompt("Enter file Name:");
+   var data = new Blob([JSON.stringify(profileData)], {type: "application/json"});
+   var a = document.createElement("a"), url= URL.createObjectURL(data);
+   a.href = url;
+   a.download = filename+".txt";
+   document.body.appendChild(a);
+   a.click();
+   setTimeout(function () {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+   }, 0);
+} // save profile data ends here
 
 function printName() {
   var uname = document?.querySelector('div.pv-text-details__left-panel > div > h1') || document?.getElementsByClassName('artdeco-entity-lockup__title ember-view')[0] || null;
@@ -174,13 +209,6 @@ function slider() {
 
 //module for extracting the details
 function extract() {
-    /// vars go below this
-    var userProfile = {};
-
-    // vars end here
-
-      //////////////
-
     // retreiving profile Section data
     const profileSection = document.querySelector(".pv-top-card");
     
@@ -200,7 +228,6 @@ function extract() {
     const descriptionElement = document.querySelector('div#about')?.parentElement.querySelector('.pv-shared-text-with-see-more > div > span.visually-hidden')// Is outside "profileSection"
     var description = descriptionElement?.textContent || null
         
-
     const url = window.location.url;
     var rawProfileData = {
         fullName,
@@ -220,145 +247,8 @@ function extract() {
         url: rawProfileData.url
     }
     ///extraction of profile data ends here///
-    // extracting education section
-    var nodes = $("#education-section ul > .ember-view");
-    let education = [];
 
-    for (const node of nodes) {
-
-        const schoolNameElement = node.querySelector('h3.pv-entity__school-name');
-        var schoolName = schoolNameElement?.textContent || null;
-        schoolName = getCleanText(schoolName);
-
-        const degreeNameElement = node.querySelector('.pv-entity__degree-name .pv-entity__comma-item');
-        var degreeName = degreeNameElement?.textContent || null;
-        degreeName = getCleanText(degreeName);
-
-        const fieldOfStudyElement = node.querySelector('.pv-entity__fos .pv-entity__comma-item');
-        var fieldOfStudy = fieldOfStudyElement?.textContent || null;
-        fieldOfStudy = getCleanText(fieldOfStudy);
-
-        // const gradeElement = node.querySelector('.pv-entity__grade .pv-entity__comma-item');
-        // const grade = (gradeElement && gradeElement.textContent) ? window.getCleanText(fieldOfStudyElement.textContent) : null;
-
-        const dateRangeElement = node.querySelectorAll('.pv-entity__dates time');
-
-        const startDatePart = dateRangeElement && dateRangeElement[0]?.textContent || null;
-        const startDate = startDatePart || null
-
-        const endDatePart = dateRangeElement && dateRangeElement[1]?.textContent || null;
-        const endDate = endDatePart || null
-        
-        
-        education.push({
-        schoolName,
-        degreeName,
-        fieldOfStudy,
-        startDate,
-        endDate
-      })
-    }
-    //extraction of education ends here
-
-
-   ///extraction of accomplishments (courses, test scores, projects,
-   ///                               Languages, honor-awards)
-
-   //first, extract out the array of nodes containing different sections
-  var coursesection = document.querySelector(".courses");
-  var projectsection = document.querySelector(".projects");
-  var languagesection = document.querySelector(".languages");
-  //var tests = acc_nodes[3]?.querySelectorAll("div > ul > li") || null;
-  // var awards = acc_nodes[4]?.querySelectorAll("div > ul > li") || null;
-
-  ///extracting different sections starting with course section
-
-  /////COURSES/////
-  var courses = []
-  if(coursesection) { //if coursesection exists
-    var course_nodes = coursesection.querySelectorAll("div > ul > li") || null;
-    for(var nodo of course_nodes) {
-      var courseName = nodo.textContent;
-      courses.push(
-        getCleanText(courseName)
-      );
-    }
-  }
-  /////COURSES EXTRACTION ENDS HERE/////
-  
-  /////PROJECTS////
-  var projects = []
-  if(projectsection) {
-    var project_nodes = projectsection.querySelectorAll("div > ul > li") || null;
-    for(var nodo of project_nodes) {
-      var projectName = nodo.textContent;
-      projects.push(
-        getCleanText(projectName)
-      );
-    }
-  }
-  /////PROJECTS EXTRACTION ENDS HERE////
-
-
-  ////LANGUAGES EXTRACTION////
-  var languages = []
-  if(languagesection) {
-    var lang_nodes = languagesection.querySelectorAll("div > ul > li") || null;
-    for(var nodo of lang_nodes) {
-      var language = nodo.textContent;
-      languages.push(
-        getCleanText(language)
-      );
-    }
-  }
-  ////LANGUAGE EXTRACTION ENDS HERE////
-
-
-  var accomplishments = {
-    "courses": courses || [],
-    "projects": projects || [],
-    "languages": languages || []
-  }
-
-  ////Accomplishments extraction ends here
-
-
-  ///VOLUNTEER EXPERIENCE EXTRACTION///
-  let volunteer_experience = [];
-  var volnodes = document.querySelectorAll('section.volunteering-section li');
-  if(volnodes) {
-
-    for(var nodo of volnodes) {
-      var vol_title = nodo.querySelector('h3')?.textContent || null;
-      var vol_company = nodo.querySelector('h4')?.textContent.replace("Company Name", "") || null;
-      var vol_location = nodo.querySelector('.pv-entity__location span:nth-child(2)')?.textContent || null;
-      var vol_description = nodo.querySelector('.pv-entity__extra-details')?.textContent || null;
-      var date1 = nodo.querySelector('.pv-entity__date-range span:nth-child(2)')?.textContent || null;
-      var date2 = nodo.querySelector('.pv-entity__bullet-item')?.textContent || null;
-
-      volunteer_experience.push(
-        {
-          title: getCleanText(vol_title),
-          company: getCleanText(vol_company),
-          location: getCleanText(vol_location),
-          description: getCleanText(vol_description),
-          date1: getCleanText(date1),
-          date2: getCleanText(date2)
-        }
-      );
-    }//for-loop over volnodes
-  }//if-condn to check if vonodes exists
-
-  //add in the extracted object values here
-  userProfile = {
-      "profileData": profileData,
-      "education": education,
-      "volunteer_experience": volunteer_experience,
-      "accomplishments" : accomplishments
-  }
-
-  
-  return userProfile;
+  return profileData;
 }//Extract() functions ends here
 
 
@@ -542,7 +432,7 @@ function extractExperience() {
   var anchor2 = document.querySelector('.pvs-list');
   
   var list = null;
-  var exp = [];
+  var exp = {};
   var roles = [];
   var company = "";
 
@@ -648,12 +538,10 @@ function extractExperience() {
        } //single role else condn ends
 
 
-       a:
-       exp.push({
-        'id': i,
+       exp[i] ={
         'company': company,
         'roles': roles
-       });
+       };
 
       }//for loop over 'i' for each item in anchor list
   } // if list anchor exists condition

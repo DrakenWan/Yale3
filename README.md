@@ -44,6 +44,9 @@ I will keep posting timed updates here. In future will shift these somewhere els
 - Removed the old, redundant code with new code or deleted it entirely.
 - Will start working on writing code for scraping other sections that are left.
 
+  (second update)
+- Added a save profile data button that consolidates profile data textboxes' values into a text file. Prompts user to name the file.
+
 #### Update(dated: 27th December, 2022)
 
 Apparently, the HTML code for `experience section` has been changed by a slight. But that is huge since experience section was hardest to generalize for me. It will take time to make further correction to it. The deepscan extraction still works for this section since the HTML document for all of them new pages is same and not changed.
