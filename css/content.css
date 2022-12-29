@@ -91,6 +91,12 @@
     transform: translateY(4px);
   }
 
+.sticky_buttons {
+    position: sticky;
+    display: block;
+    font-size: 16px;
+    margin: 15px 25px 0px 15px;;
+}
 
 #deepscan {
     padding: 10px;

@@ -22,10 +22,15 @@ function main() {
     
     ///////// VARIABLES //////////
     // define any VARIABLES below here
-    var data = {};
+    
 
 
     // Edit this string to edit the slider popup 
+            /* 
+                NOTE: Unable to access the slider.html file even after using troubleshoot
+                      steps from google. So I am using the content script to inject the
+                      slider file into the webpage.
+            */
     // (appears on clicking extension
     // icon)
     var sliderInnerHTMLString = "\
@@ -35,6 +40,8 @@ function main() {
     <div id='deepscancontainer'>\
     <label id='deepscanlabel' for='deepscan'>Deepscan?<input type='checkbox' name='deepscan' id='deepscan' value='deepscan'/></label>\
     </div>\
+    <div class='internal_button sticky_buttons' id='clear_text_button'>Clear Text?</div>\
+    <br/>\
     </div>\
     <br/>\
     \
@@ -43,7 +50,8 @@ function main() {
     <div id='sbodycontainer'>\
     <br/>\
     <br/>\
-    <textarea id='objectvalue'></textarea>\
+    <span style='font-size: 10px'><i>This textbox extracts if you scroll.</i></small>\
+    <textarea id='basicprofile'></textarea>\
     <br/>\
     <h2> Education Section </h2>\
     <br/>\
@@ -80,78 +88,63 @@ function main() {
 
     //////////VARIABLES END///////////
 
-    //expand page sections
-    //expandButtons();
 
-    //generate the DOM nodes below
-    
+
+    // generate the DOM nodes below //   
 
     sliderGen(sliderInnerHTMLString);
 
-    //DOM node generators above//
+    // DOM node generators above //
 
 
     //listener to trigger action - which is to push in/out 
-    //the slider
+    //the slider toggle works with the service_worker file
     chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
       if(msg.todo == "toggle") {
         slider();
       }
     });
-
-
-
-    //Added this as a temporary solution
-    //Issue: The page doesn't fully load and content script 
-    //       runs only once
-    //Resolution: Added trigger through window.onscroll
-    //            function to register extraction everytime
-    //            a user scrolls on the webpage.
-   
-    data = extract();   
-    var bodycontainer = document.getElementById("slider").querySelector("#sbodycontainer");
-    bodycontainer = bodycontainer.querySelector("#objectvalue")
-    bodycontainer.value = JSON.stringify(data)
     
-    bodycontainer = document.getElementById("slider").querySelector("#sheaderheader");
-    var uname = document?.querySelector('div.pv-text-details__left-panel > div > h1') || null;
-    uname = uname?.textContent || "";
-    bodycontainer.innerHTML = "<h1>"+uname+"</h1>";
-    window.onscroll = function() {
-        data = extract();
-        //alert(JSON.stringify(data));
-        var bodycontainer = document.getElementById("slider").querySelector("#sbodycontainer");
-        bodycontainer = bodycontainer.querySelector("#objectvalue")
-        bodycontainer.value = JSON.stringify(data)
-
-        bodycontainer = document.getElementById("slider").querySelector("#sheaderheader");
-        var uname = document?.querySelector('div.pv-text-details__left-panel > div > h1') || null;
-        uname = uname?.textContent || "";
-        bodycontainer.innerHTML = "<h1>"+uname+"</h1>";
-    } 
     
   //run savePDF option
   document.getElementById('savepdf').addEventListener("click", savePDF);
 
+  //Clear text button action
+  document.getElementById('clear_text_button').addEventListener("click", function() {
+    var ids = ['basicprofile', 'educationtext', 'experiencetext', 'skillstext', 'certificationstext' ];
+    for(var i=0; i<ids.length; i++) {
+        document.getElementById(ids[i]).value = "";
+      }
+  });
+
+
+  window.onmousemove = function () {
+    // any heavyduty function added here might create an overhead or slowing down.
+    printName();
+  }
+
+  window.onscroll = function () {
+    printName();
+    document.getElementById('basicprofile').value = JSON.stringify(extract());
+  }
 
   //deploying listeners for `manual extraction` buttons feature
   document.getElementById('certification_extract_button').addEventListener("click", extractCert);
   document.getElementById('skills_extract_button').addEventListener("click", extractSkills);
   document.getElementById('experience_extract_button').addEventListener("click", extractExperience);
   document.getElementById('education_extract_button').addEventListener("click", extractEducation);
-}
+} //MAIN FUNCTION ENDS HERE //
 
 
 //*=======================================================*//
 
 
-//extract btn generator
-// function extractBtnGen() {
-//     var extractBtn = document.createElement("div");
-//     extractBtn.textContent = "Toggle Frame";
-//     extractBtn.id = "extractBtn";
-//     document.querySelector("#global-nav").append(extractBtn)
-// }
+function printName() {
+  var uname = document?.querySelector('div.pv-text-details__left-panel > div > h1') || document?.getElementsByClassName('artdeco-entity-lockup__title ember-view')[0] || null;
+    uname = uname?.textContent || "";
+    uname = getCleanText(uname);
+    document.getElementById('slider').querySelector('#sheaderheader').innerHTML = "<h1>" + uname + "</h1>";
+}
 
 //slider window element generator
 function sliderGen(sliderInnerHTMLString) {
@@ -572,7 +565,7 @@ function extractExperience() {
       roles = [];
 
 
-      var elem = list[i].querySelector('div > div').firstElementChild.nextElementSibling; //for anchor 1
+      var elem = list[i].querySelector('div > div').nextElementSibling; //for anchor 1
       if(elem.querySelector('div > a')) {
         // condition for multiple roles in same company
         company = elem.querySelector('div > a > div > span > span')?.textContent || "";
@@ -585,7 +578,7 @@ function extractExperience() {
           // traversing roles list in a company
           
           var keke = elems[j].querySelector("div > div")?.nextElementSibling || null;
-          keke = keke.querySelector('div > a')
+          keke = keke?.querySelector('div > a') || null;
 
           kchilds = keke.children;
           var rname=" ", startDate=" ", endDate=" ", loc=" ";

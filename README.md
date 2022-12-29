@@ -19,7 +19,7 @@ However, the server sided script can still be implemented to this day. I recomme
 Section Name       |      Can Extract?      | Clean?              | Deepscan Extraction?
 :----------------- | :-----------------     | :-----------------  | :------------------
 *profile data*    |     :heavy_check_mark: | :heavy_check_mark:   |  :heavy_check_mark:
-*experience section*|     :x: | :x: | :heavy_check_mark:
+*experience section*|     :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 *education section*|     :x: | :x: | :x:
 *certifications* |     :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 *volunteer experience*|     :x: | :x: | :x:
@@ -36,6 +36,13 @@ I strive to make the code as general as possible but the extractor tool may not 
 ## Update Timeline
 
 I will keep posting timed updates here. In future will shift these somewhere else if I have time
+
+#### Update(dated: 29th December, 2022)
+
+- I have fixed the extraction of `experience section`. It is working fine for 30 LinkedIn profile pages I verified it with.
+- I have added a `clear text` button to clear textbox content.
+- Removed the old, redundant code with new code or deleted it entirely.
+- Will start working on writing code for scraping other sections that are left.
 
 #### Update(dated: 27th December, 2022)
 
