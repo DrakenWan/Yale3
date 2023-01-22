@@ -50,7 +50,7 @@ function main() {
     <div id='sbodycontainer'>\
     <br/>\
     <br/>\
-    <span style='font-size: 10px'><i>This textbox extracts if you scroll.</i></small>\
+    <span style='font-size: 10px'><i>This textbox extracts if you scroll the slider menu.</i></small>\
     <textarea id='basicprofile'></textarea>\
     <br/>\
     <h2> Education Section </h2>\
@@ -126,7 +126,7 @@ function main() {
     printName();
   }
 
-  window.onscroll = function () {
+  document.getElementById("slider").onscroll = function () {
     printName();
     document.getElementById('basicprofile').value = JSON.stringify(extract());
   }
@@ -135,7 +135,7 @@ function main() {
   document.getElementById('certification_extract_button').addEventListener("click", extractCert);
   document.getElementById('skills_extract_button').addEventListener("click", extractSkills);
   document.getElementById('experience_extract_button').addEventListener("click", extractExperience);
-  document.getElementById('education_extract_button').addEventListener("click", extractEducation);4
+  document.getElementById('education_extract_button').addEventListener("click", extractEducation);
 
 
   //save data button
@@ -553,29 +553,84 @@ function extractExperience() {
 // Extract Experience //
 
 function extractEducation(){
-   //defining anchors (roots from where scraping starts)
-   var anchor1 = document.getElementById("education");
-   var anchor2 = document.querySelector('.pvs-list');
+  //defining anchors (roots from where scraping starts)
+  var anchor1 = document.getElementById('education');
+  var anchor2 = document.querySelector('.pvs-list');
+
+  var list = null;
+  var certs = [];
   
-   var list = null;
 
-   if(anchor1 && !document.getElementById('deepscan').checked) {
-      anchor1 = anchor1.nextElementSibling.nextElementSibling
-      list = anchor1.querySelector('ul').children;
-    } 
+  if(anchor1) {
+    anchor1 = anchor1.nextElementSibling.nextElementSibling
+    list = anchor1.querySelector('ul').children;
+  }
 
-  if(anchor2 && document.getElementById('deepscan').checked && location.href.includes('experience')) {
-      list = anchor2.children;
-    } 
+  if(anchor2 && document.getElementById('deepscan').checked && location.href.includes('certifications')) {
+    list = anchor2.children;
+  }
 
   if(list) { //if the anchor exists
     for(i=0; i<list.length; i++) {
-      if(document.getElementById('deepscan').checked && !location.href.includes('experience'))
+      var elem = null;
+      var firstdiv = null;
+      var url = "";
+
+      if(anchor1 && !document.getElementById('deepscan').checked) {
+        //alert("anchor1");
+        elem = list[i].firstElementChild.firstElementChild.nextElementSibling
+                        .querySelectorAll('div');
+        
+        if(elem[0].querySelector('a')){
+          firstdiv = elem[0].querySelector('a').children;
+        } else {
+          firstdiv = elem[1].children;
+        }
+        
+
+        url = elem[4]?.querySelector('a')?.href || "";
+        //if anchor1
+      } 
+      else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked  && location.href.includes('certifications')) {
+        //alert("anchor2s");
+        elem = list[i].querySelector('div > div').firstElementChild.nextElementSibling;
+        firstdiv = elem.firstElementChild.firstElementChild.children;
+
+        url = elem.firstElementChild.nextElementSibling?.querySelector('a').href || "";
+      } //if anchor2
+      else {
         break;
+      }
       
-    }// for loops
-  } // if
-  
+    //var condn = (firstdiv.querySelector('a'))? 'a >' : '';
+    var name = getCleanText(firstdiv[0].querySelector('span > span')?.textContent || "");
+    var issuedby = getCleanText(firstdiv[1].querySelector('span > span')?.textContent || "");
+    var issuedon = getCleanText(firstdiv[2]?.querySelector('span > span')?.textContent || "");
+    var expiration = issuedon? issuedon.split('·')[1] : "";
+    var issuedon = issuedon? issuedon.split('·')[0]?.split('Issued ')[1] || "" : "";
+
+      
+
+      var temp = {
+        'id': i,
+        'title': name,
+        'issuer':issuedby,
+        'date':issuedon,
+        'expiration': expiration,
+        'link': url
+      };
+
+      certs.push(temp);
+
+    } //for loop to scrape through the list 
+  }
+  var objtemp = {
+    'name': 'licenses',
+    'data': certs
+  }
+
+  document.getElementById('certificationstext').value = JSON.stringify(objtemp);
+
 } //extract education ends here
 
 
