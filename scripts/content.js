@@ -121,10 +121,10 @@ function main() {
 
 
 
-  window.onmousemove = function () {
-    // any heavyduty function added here might create an overhead or slowing down.
-    printName();
-  }
+  // window.onmousemove = function () {
+  //   // any heavyduty function added here might create an overhead or slowing down.
+  //   printName();
+  // }
 
   document.getElementById("slider").onscroll = function () {
     printName();
@@ -250,27 +250,6 @@ function extract() {
 
   return profileData;
 }//Extract() functions ends here
-
-
-// Save PDF document of a linkedinProfile
-function savePDF() {
-  var spanList = document.getElementsByTagName("span");
-  var m = [];
-
-  for(i=0; i<spanList.length; i++)
-   {
-     if(spanList[i].textContent == 'Save to PDF') {
-      m.push(spanList[i]);
-     }
-   }
-
-   if(m.length < 1) {
-    alert("No option to download profile.")
-   } else {
-    m[0].click();
-   }
-
-}
 
 
 // Extract license and certifications
@@ -558,7 +537,7 @@ function extractEducation(){
   var anchor2 = document.querySelector('.pvs-list');
 
   var list = null;
-  var certs = [];
+  var education = [];
   
 
   if(anchor1) {
@@ -566,7 +545,7 @@ function extractEducation(){
     list = anchor1.querySelector('ul').children;
   }
 
-  if(anchor2 && document.getElementById('deepscan').checked && location.href.includes('certifications')) {
+  if(anchor2 && document.getElementById('deepscan').checked && location.href.includes('education')) {
     list = anchor2.children;
   }
 
@@ -574,7 +553,7 @@ function extractEducation(){
     for(i=0; i<list.length; i++) {
       var elem = null;
       var firstdiv = null;
-      var url = "";
+      
 
       if(anchor1 && !document.getElementById('deepscan').checked) {
         //alert("anchor1");
@@ -587,49 +566,47 @@ function extractEducation(){
           firstdiv = elem[1].children;
         }
         
-
-        url = elem[4]?.querySelector('a')?.href || "";
         //if anchor1
       } 
-      else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked  && location.href.includes('certifications')) {
+      else if ((anchor1 == null) && anchor2 && document.getElementById('deepscan').checked  && location.href.includes('education')) {
         //alert("anchor2s");
         elem = list[i].querySelector('div > div').firstElementChild.nextElementSibling;
         firstdiv = elem.firstElementChild.firstElementChild.children;
 
-        url = elem.firstElementChild.nextElementSibling?.querySelector('a').href || "";
+        
       } //if anchor2
       else {
         break;
       }
       
-    //var condn = (firstdiv.querySelector('a'))? 'a >' : '';
-    var name = getCleanText(firstdiv[0].querySelector('span > span')?.textContent || "");
-    var issuedby = getCleanText(firstdiv[1].querySelector('span > span')?.textContent || "");
-    var issuedon = getCleanText(firstdiv[2]?.querySelector('span > span')?.textContent || "");
-    var expiration = issuedon? issuedon.split('·')[1] : "";
-    var issuedon = issuedon? issuedon.split('·')[0]?.split('Issued ')[1] || "" : "";
+     
+      var institute_name = getCleanText(firstdiv[0].querySelector('span > span')?.textContent || "");
+      var degree = getCleanText(firstdiv[1].querySelector('span > span')?.textContent || "");
+      var start = getCleanText(firstdiv[2]?.querySelector('span > span')?.textContent.split('-')[0] || "");
+      var end = getCleanText(firstdiv[2]?.querySelector('span > span')?.textContent.split('-')[1] || "");
+      var grade = getCleanText(elem?.firstElementChild?.nextElementSibling?.querySelector('ul > li >div > div > div >div >div')?.textContent.split(':')[2] || "");
 
-      
+        
 
       var temp = {
         'id': i,
-        'title': name,
-        'issuer':issuedby,
-        'date':issuedon,
-        'expiration': expiration,
-        'link': url
+        'name': institute_name,
+        'degree': degree,
+        'start_date': start,
+        'end_data': end,
+        'grade': grade
       };
 
-      certs.push(temp);
+      education.push(temp);
 
     } //for loop to scrape through the list 
   }
   var objtemp = {
-    'name': 'licenses',
-    'data': certs
+    'name': 'education',
+    'data': education
   }
 
-  document.getElementById('certificationstext').value = JSON.stringify(objtemp);
+  document.getElementById('educationtext').value = JSON.stringify(objtemp);
 
 } //extract education ends here
 
@@ -644,6 +621,27 @@ function extractEducation(){
 
 //////////// *---- UTILS -----* //////////////
 // Utility functions
+
+// Save PDF document of a linkedinProfile
+function savePDF() {
+  var spanList = document.getElementsByTagName("span");
+  var m = [];
+
+  for(i=0; i<spanList.length; i++)
+   {
+     if(spanList[i].textContent == 'Save to PDF') {
+      m.push(spanList[i]);
+     }
+   }
+
+   if(m.length < 1) {
+    alert("No option to download profile.")
+   } else {
+    m[0].click();
+   }
+
+}
+
 
 function expandButtons() {
   const expandButtonsSelectors = [

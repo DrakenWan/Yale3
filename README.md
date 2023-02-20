@@ -20,7 +20,7 @@ Section Name       |      Can Extract?      | Clean?              | Deepscan Ext
 :----------------- | :-----------------     | :-----------------  | :------------------
 *profile data*    |     :heavy_check_mark: | :heavy_check_mark:   |  :heavy_check_mark:
 *experience section*|     :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
-*education section*|     :x: | :x: | :x:
+*education section*|     :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 *certifications* |     :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 *volunteer experience*|     :x: | :x: | :x:
 *skills section*  |     :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
