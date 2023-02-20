@@ -37,6 +37,11 @@ I strive to make the code as general as possible but the extractor tool may not 
 
 I will keep posting timed updates here. In future will shift these somewhere else if I have time
 
+#### Update(dated: 20th February, 2023)
+
+- Completed the code for education section extraction. I have tested it only on one profile. Need to test on other profiles too. You may notice the code has been recycled from the `extractCert` method. LinkedIn has made their HTML document very consistent in last update. Most of the anchor part of the code can be simply copied from any of the other sections. Can make some of these common variables common for these different manual extraction methods but it will be cumbersome.
+
+
 #### Update(dated: 29th December, 2022)
 
 - I have fixed the extraction of `experience section`. It is working fine for 30 LinkedIn profile pages I verified it with.
