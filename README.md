@@ -26,7 +26,9 @@ Section Name       |      Can Extract?      | Clean?              | Deepscan Ext
 *skills section*  |     :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark:
 *accomplishments* |     :x: | :x:  | :x:
 
+## What is Deepscan?
 
+It is nothing but a fancy term for the functionality to scrape more data as the linkedin limits the list of content shown for each section in the profile (on average max of 3 items in a list). So you have to press on show more. This takes you to a next "DOM object" that covers entire window with full list of items in a section. So for this you have to checkmark the "deepscan" checkbox button and then as usual press on "extract <section name>" button to get the full list of items. If you are doing the scraping on profile page for same section. Do not forget to uncheck it.
 
 ## Bug reporting
 I strive to make the code as general as possible but the extractor tool may not be perfect. If you find any bug on any profile please let me know in [issues](https://github.com/DrakenWan/Yale3/issues) section.
