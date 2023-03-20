@@ -33,7 +33,6 @@ It is nothing but a fancy term for the functionality to scrape more data as the 
 ## Bug reporting
 I strive to make the code as general as possible but the extractor tool may not be perfect. If you find any bug on any profile please let me know in [issues](https://github.com/DrakenWan/Yale3/issues) section.
 
- **Note**: If the chrome extension hangs due to some error or bug, go to `chrome://extensions` and `update` the `Yale3` extension and referh to a new linkedin profile. THis will resolve the issue. If possible you can screenshot the error you find in the `chrome://extensions` page and report it in the issue section.
 
 ## Update Timeline
 
