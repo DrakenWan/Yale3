@@ -10,6 +10,7 @@ You are free to do anything with the code on the repo. Read the [license](https:
 
 ## Extraction
 
+This section has not been updated and tested in last 5 months. Basic data would still scrape absolutely but may not be clean.
 
 Section Name       |      Can Extract?      | Clean?              | Deepscan Extraction?
 :----------------- | :-----------------     | :-----------------  | :------------------
